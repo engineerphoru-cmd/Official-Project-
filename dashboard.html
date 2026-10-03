@@ -296,6 +296,7 @@
       appId: "1:986137334088:web:5e454e72d525e49d27a37d",
       measurementId: "G-NEQVDK70HL"
     };
+    const RESERVED_ADMIN_EMAIL = "ran4code@gmail.com";
 
     const authView = document.getElementById("auth-view");
     const verifyView = document.getElementById("verify-view");
@@ -658,10 +659,15 @@
         showSignIn("Firebase is not ready. Check the Firebase project configuration and reload.", "error");
         return;
       }
+      const email = emailInput.value.trim();
+      if (authMode === "signup" && email.toLowerCase() === RESERVED_ADMIN_EMAIL) {
+        authStatus.textContent = "This email is reserved for the administrator. Sign in from the admin page instead.";
+        authStatus.dataset.kind = "error";
+        return;
+      }
       authSubmit.disabled = true;
       authStatus.textContent = authMode === "reset" ? "Sending password reset email..." : authMode === "signup" ? "Creating your account..." : "Signing in...";
       authStatus.dataset.kind = "";
-      const email = emailInput.value.trim();
       try {
         if (authMode === "reset") {
           await sendPasswordResetEmail(auth, email);
@@ -824,6 +830,11 @@
       const nextEmail = newEmailInput.value.trim();
       if (nextEmail.toLowerCase() === (user.email || "").toLowerCase()) {
         emailChangeStatus.textContent = "That is already the email address on this account.";
+        emailChangeStatus.dataset.kind = "error";
+        return;
+      }
+      if (nextEmail.toLowerCase() === RESERVED_ADMIN_EMAIL) {
+        emailChangeStatus.textContent = "This email is reserved for the administrator.";
         emailChangeStatus.dataset.kind = "error";
         return;
       }
