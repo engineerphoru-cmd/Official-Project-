@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Sign in to your Runfourcode dashboard.">
+  <title>Dashboard — Runfourcode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.468.0/font/lucide.css">
+  <style>
+    :root {
+      color-scheme: dark;
+      --black: #050505;
+      --white: #f5f5f7;
+      --muted: #8b8b91;
+      --line: rgba(255,255,255,.12);
+      --teal: #2dd4bf;
+      --purple: #8b5cf6;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+    *,*::before,*::after { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; min-height: 100svh; margin: 0; overflow-x: hidden; background: var(--black); color: var(--white); font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing: antialiased; }
+    body::before { position: fixed; z-index: -1; inset: 0; background: radial-gradient(ellipse at 15% 15%,rgba(139,92,246,.17),transparent 37%),radial-gradient(ellipse at 85% 75%,rgba(45,212,191,.1),transparent 37%),#050505; content: ""; pointer-events: none; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; font: inherit; }
+    button:focus-visible,a:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .topbar { position: absolute; z-index: 5; top: 0; left: 0; display: flex; width: 100%; min-height: 82px; align-items: center; justify-content: space-between; gap: 20px; padding: 16px clamp(20px,5vw,68px); border-bottom: 1px solid rgba(255,255,255,.075); background: rgba(5,5,5,.35); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+    .brand img { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.19); border-radius: 10px; object-fit: cover; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #b5b5bb; font-size: 11px; transition: color 180ms ease; }
+    .back-link:hover { color: var(--white); }
+    .page-shell { display: grid; min-height: 100vh; min-height: 100svh; place-items: center; padding: 112px 22px 44px; }
+    .auth-card { position: relative; width: min(100%,520px); min-height: 470px; padding: 52px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 22px; background: linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025) 52%,rgba(139,92,246,.035)); box-shadow: 0 32px 100px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.07); backdrop-filter: blur(24px); animation: card-in 800ms var(--ease) both; }
+    .auth-card::before { position: absolute; top: -150px; right: -100px; width: 280px; height: 280px; border-radius: 50%; background: rgba(45,212,191,.12); filter: blur(85px); content: ""; pointer-events: none; }
+    .auth-card::after { position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: linear-gradient(90deg,transparent,rgba(45,212,191,.55),rgba(139,92,246,.4),transparent); content: ""; }
+    @keyframes card-in { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .card-mark { position: relative; display: grid; width: 54px; height: 54px; place-items: center; overflow: hidden; border: 1px solid rgba(255,255,255,.18); border-radius: 16px; background: #f5f5f7; box-shadow: 0 12px 35px rgba(0,0,0,.32); }
+    .card-mark img { width: 100%; height: 100%; object-fit: cover; }
+    .eyebrow { position: relative; margin: 31px 0 0; color: #a8a8af; font-size: 9px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { position: relative; margin: 13px 0 0; font-size: 37px; font-weight: 600; line-height: 1.14; letter-spacing: 0; }
+    .intro { position: relative; max-width: 390px; margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .google-button { position: relative; display: flex; width: 100%; min-height: 49px; align-items: center; justify-content: center; gap: 11px; margin-top: 22px; border: 1px solid rgba(255,255,255,.17); border-radius: 10px; background: rgba(255,255,255,.055); color: #efeff2; cursor: pointer; font-size: 11px; font-weight: 600; transition: transform 180ms var(--ease),border-color 180ms ease,background 180ms ease; }
+    .google-button:hover { border-color: rgba(255,255,255,.31); background: rgba(255,255,255,.09); transform: translateY(-1px); }
+    .google-button:active { transform: scale(.985); }
+    .google-button:disabled { cursor: wait; opacity: .6; }
+    .google-mark { display: grid; width: 19px; height: 19px; place-items: center; border-radius: 50%; background: #fff; color: #4285f4; font-size: 14px; font-weight: 800; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; margin-top: 19px; color: #77777f; font-size: 9px; }
+    .auth-divider::before,.auth-divider::after { height: 1px; flex: 1; background: rgba(255,255,255,.1); content: ""; }
+    .auth-tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 27px; padding: 4px; border: 1px solid rgba(255,255,255,.1); border-radius: 11px; background: rgba(0,0,0,.25); }
+    .auth-tab { min-height: 37px; border: 0; border-radius: 8px; background: transparent; color: #8f8f97; cursor: pointer; font-size: 10px; font-weight: 600; transition: background 180ms ease,color 180ms ease,box-shadow 180ms ease; }
+    .auth-tab[aria-selected="true"] { background: rgba(255,255,255,.1); color: var(--white); box-shadow: inset 0 1px rgba(255,255,255,.08); }
+    .auth-form { position: relative; display: grid; gap: 14px; margin-top: 18px; }
+    .auth-field { display: grid; gap: 8px; }
+    .auth-field label { color: #bdbdc4; font-size: 10px; font-weight: 600; }
+    .auth-field input { width: 100%; min-height: 46px; padding: 12px 13px; border: 1px solid rgba(255,255,255,.13); border-radius: 9px; background: rgba(0,0,0,.28); color: var(--white); font-size: 12px; transition: border-color 180ms ease,box-shadow 180ms ease; }
+    .auth-field input::placeholder { color: #65656d; }
+    .auth-field input:focus { border-color: rgba(45,212,191,.58); box-shadow: 0 0 0 3px rgba(45,212,191,.07); outline: 0; }
+    .password-field { position: relative; }
+    .password-field input { padding-right: 46px; }
+    .password-toggle { position: absolute; top: 50%; right: 7px; display: grid; width: 34px; height: 34px; place-items: center; border: 0; border-radius: 7px; background: transparent; color: #888890; cursor: pointer; transform: translateY(-50%); }
+    .password-toggle:hover { background: rgba(255,255,255,.07); color: var(--white); }
+    .forgot-link,.back-to-login { justify-self: end; padding: 2px 0; border: 0; background: transparent; color: #a9a9b1; cursor: pointer; font-size: 10px; transition: color 180ms ease; }
+    .forgot-link:hover,.back-to-login:hover { color: var(--teal); }
+    .auth-submit { display: flex; width: 100%; min-height: 50px; align-items: center; justify-content: center; gap: 9px; margin-top: 3px; border: 0; border-radius: 10px; background: linear-gradient(105deg,#a486ff,#79e4d5); color: #08090b; cursor: pointer; font-size: 11px; font-weight: 700; transition: transform 180ms var(--ease),box-shadow 180ms ease,opacity 180ms ease; }
+    .auth-submit:hover { box-shadow: 0 8px 28px rgba(45,212,191,.16); transform: translateY(-1px); }
+    .auth-submit:active { transform: scale(.985); }
+    .auth-submit:disabled { cursor: wait; opacity: .6; }
+    .auth-status { position: relative; min-height: 36px; margin: 17px 0 0; color: #9d9da5; font-size: 10px; line-height: 1.7; }
+    .auth-status[data-kind="error"] { color: #ff9a9a; }
+    .auth-status[data-kind="success"] { color: #83e6d6; }
+    .privacy-note { position: relative; display: flex; align-items: center; gap: 8px; margin-top: 18px; color: #686870; font-size: 9px; }
+    .privacy-note i { color: #85858d; font-size: 12px; }
+    .verification-actions { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 27px; }
+    .verification-button,.change-email-button { min-height: 45px; padding: 0 14px; border: 1px solid rgba(255,255,255,.15); border-radius: 9px; background: rgba(255,255,255,.055); color: #eeeef2; cursor: pointer; font-size: 10px; font-weight: 600; transition: background 180ms ease,border-color 180ms ease,transform 180ms ease; }
+    .verification-button:hover,.change-email-button:hover { border-color: rgba(45,212,191,.4); background: rgba(45,212,191,.08); }
+    .verification-button:disabled,.change-email-button:disabled { cursor: wait; opacity: .6; }
+    .verification-email { position: relative; margin: 14px 0 0; color: var(--white); font-size: 12px; overflow-wrap: anywhere; }
+    .change-email-button { min-height: 38px; flex: 0 0 auto; font-size: 9px; }
+    .email-change-form { display: grid; gap: 13px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.035); }
+    .email-change-form h2 { margin: 0; font-size: 14px; font-weight: 600; }
+    .email-change-form .auth-field { max-width: 430px; }
+    .email-change-status { min-height: 18px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .email-change-status[data-kind="error"] { color: #ff9a9a; }
+    .email-change-status[data-kind="success"] { color: #83e6d6; }
+    .email-change-submit { justify-self: start; min-height: 42px; padding: 0 15px; border: 0; border-radius: 9px; background: linear-gradient(105deg,#a486ff,#79e4d5); color: #08090b; cursor: pointer; font-size: 10px; font-weight: 700; }
+    .email-change-submit:disabled { cursor: wait; opacity: .6; }
+    .dashboard-shell { display: grid; width: min(100%,1080px); gap: 25px; animation: card-in 700ms var(--ease) both; }
+    .dashboard-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .dashboard-title p { margin: 0; color: var(--teal); font-size: 9px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+    .dashboard-title h1 { margin-top: 11px; font-size: 39px; }
+    .account-wrap { position: relative; }
+    .account-button { display: flex; min-height: 50px; align-items: center; gap: 11px; padding: 6px 13px 6px 7px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.055); cursor: pointer; transition: border-color 180ms ease,background 180ms ease; }
+    .account-button:hover,.account-button[aria-expanded="true"] { border-color: rgba(45,212,191,.4); background: rgba(255,255,255,.085); }
+    .account-avatar { display: grid; width: 36px; height: 36px; place-items: center; overflow: hidden; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; background: linear-gradient(145deg,rgba(139,92,246,.5),rgba(45,212,191,.42)); color: #fff; font-size: 12px; font-weight: 700; }
+    .account-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .account-email { max-width: 210px; overflow: hidden; color: #dedee3; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .account-chevron { color: #9b9ba2; font-size: 12px; }
+    .account-menu { position: absolute; z-index: 10; top: calc(100% + 10px); right: 0; width: min(300px,calc(100vw - 44px)); padding: 9px; border: 1px solid var(--line); border-radius: 15px; background: rgba(18,18,21,.96); box-shadow: 0 20px 55px rgba(0,0,0,.5); backdrop-filter: blur(22px); animation: menu-in 180ms var(--ease) both; }
+    @keyframes menu-in { from { opacity: 0; transform: translateY(-5px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .menu-profile { display: grid; gap: 5px; padding: 12px; border-bottom: 1px solid rgba(255,255,255,.09); }
+    .menu-name { color: var(--white); font-size: 12px; font-weight: 600; }
+    .menu-email { color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .provider-label { display: inline-flex; width: fit-content; align-items: center; gap: 6px; margin-top: 5px; color: #8de7d9; font-size: 9px; }
+    .signout-button { display: flex; width: 100%; min-height: 40px; align-items: center; gap: 9px; margin-top: 7px; padding: 0 12px; border: 0; border-radius: 9px; background: transparent; color: #d8d8de; cursor: pointer; text-align: left; font-size: 11px; transition: background 160ms ease,color 160ms ease; }
+    .signout-button:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .welcome-panel { position: relative; min-height: 310px; padding: clamp(27px,5vw,58px); overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: radial-gradient(ellipse at 100% 0%,rgba(45,212,191,.11),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02)); box-shadow: inset 0 1px rgba(255,255,255,.05); }
+    .welcome-panel::after { position: absolute; right: -60px; bottom: -170px; width: 350px; height: 350px; border: 1px solid rgba(139,92,246,.18); border-radius: 50%; box-shadow: 0 0 0 28px rgba(139,92,246,.025),0 0 0 58px rgba(45,212,191,.025); content: ""; pointer-events: none; }
+    .welcome-kicker { position: relative; z-index: 1; display: flex; align-items: center; gap: 9px; color: #9b9ba2; font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 14px rgba(45,212,191,.7); }
+    .welcome-panel h2 { position: relative; z-index: 1; max-width: 680px; margin: 22px 0 0; font-size: clamp(34px,6vw,58px); font-weight: 600; line-height: 1.08; letter-spacing: 0; }
+    .welcome-panel h2 span { color: transparent; background: linear-gradient(100deg,#d4c5ff,#fff 55%,#87e7d8); -webkit-background-clip: text; background-clip: text; }
+    .welcome-panel > p { position: relative; z-index: 1; max-width: 530px; margin: 17px 0 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .identity-panel { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 21px 23px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255,255,255,.035); }
+    .identity-copy { display: grid; gap: 7px; }
+    .identity-label { color: #85858d; font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .identity-value { color: #e1e1e6; font-size: 12px; overflow-wrap: anywhere; }
+    .verified-mark { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 7px; color: #88dfd2; font-size: 10px; }
+    .dashboard-section { display: grid; gap: 17px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
+    .section-head h2 { margin: 0; font-size: 21px; font-weight: 600; }
+    .section-head p { margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .section-index { color: #77777f; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+    .request-panel { padding: clamp(20px,4vw,34px); border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); }
+    .project-request-form { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; margin-top: 22px; }
+    .request-field { display: grid; min-width: 0; gap: 8px; }
+    .request-field-wide { grid-column: 1/-1; }
+    .request-field label { color: #c8c8cf; font-size: 10px; font-weight: 600; }
+    .request-field input,.request-field select,.request-field textarea { width: 100%; min-height: 44px; padding: 11px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 9px; background: rgba(0,0,0,.3); color: var(--white); font: inherit; font-size: 11px; }
+    .request-field textarea { min-height: 92px; resize: vertical; line-height: 1.65; }
+    .request-field select { color-scheme: dark; }
+    .request-field input::placeholder,.request-field textarea::placeholder { color: #67676f; }
+    .request-field input:focus,.request-field select:focus,.request-field textarea:focus { border-color: rgba(45,212,191,.58); outline: none; box-shadow: 0 0 0 3px rgba(45,212,191,.07); }
+    .request-field input[readonly] { color: #8c8c93; }
+    .request-submit { grid-column: 1/-1; justify-self: start; min-height: 45px; padding: 0 17px; border: 0; border-radius: 9px; background: linear-gradient(105deg,#a486ff,#79e4d5); color: #08090b; cursor: pointer; font-size: 10px; font-weight: 700; }
+    .request-submit:disabled { cursor: wait; opacity: .6; }
+    .workspace-status { grid-column: 1/-1; min-height: 18px; margin: -5px 0 0; color: #8de7d9; font-size: 10px; line-height: 1.6; }
+    .workspace-status[data-kind="error"] { color: #ff9a9a; }
+    .request-list { display: grid; gap: 12px; }
+    .request-card { display: grid; gap: 16px; padding: 20px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255,255,255,.035); }
+    .request-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .request-card h3 { margin: 0; font-size: 14px; font-weight: 600; }
+    .request-meta { display: flex; flex-wrap: wrap; gap: 7px 12px; margin-top: 7px; color: var(--muted); font-size: 9px; }
+    .request-status { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; color: #cfcfd5; font-size: 8px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .request-status::before { width: 5px; height: 5px; border-radius: 50%; background: #aaa; content: ""; }
+    .request-status[data-status="approved"],.request-status[data-status="in-progress"],.request-status[data-status="review"] { border-color: rgba(45,212,191,.25); color: #8de7d9; }
+    .request-status[data-status="approved"]::before,.request-status[data-status="in-progress"]::before,.request-status[data-status="review"]::before { background: var(--teal); }
+    .request-status[data-status="declined"] { border-color: rgba(255,130,130,.25); color: #ffaaaa; }
+    .request-status[data-status="declined"]::before { background: #ff8585; }
+    .request-progress { display: grid; gap: 8px; }
+    .request-progress-label { display: flex; justify-content: space-between; gap: 12px; color: #a6a6ad; font-size: 9px; }
+    .request-progress-track { height: 4px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
+    .request-progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg,var(--purple),var(--teal)); transition: width 450ms var(--ease); }
+    .request-note { margin: 0; padding: 11px 13px; border-left: 2px solid rgba(45,212,191,.5); border-radius: 0 8px 8px 0; background: rgba(45,212,191,.045); color: #c9c9d0; font-size: 10px; line-height: 1.65; white-space: pre-wrap; }
+    .request-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .request-link { display: inline-flex; min-height: 35px; align-items: center; gap: 7px; padding: 0 11px; border: 1px solid rgba(45,212,191,.25); border-radius: 8px; color: #91e8dc; font-size: 9px; font-weight: 600; }
+    .request-link:hover { background: rgba(45,212,191,.08); }
+    .empty-state { padding: 25px; border: 1px dashed rgba(255,255,255,.15); border-radius: 13px; color: var(--muted); text-align: center; font-size: 11px; line-height: 1.7; }
+    .notification-list { display: grid; gap: 9px; }
+    .notification-item { display: grid; grid-template-columns: 9px minmax(0,1fr) auto; align-items: start; gap: 10px; padding: 13px 14px; border: 1px solid rgba(255,255,255,.09); border-radius: 11px; background: rgba(255,255,255,.025); }
+    .notification-dot { width: 7px; height: 7px; margin-top: 4px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px rgba(45,212,191,.5); }
+    .notification-message { margin: 0; color: #d5d5db; font-size: 10px; line-height: 1.6; }
+    .notification-date { color: #77777f; font-size: 8px; white-space: nowrap; }
+    .admin-link { display: inline-flex; align-items: center; gap: 7px; color: #9b9ba2; font-size: 9px; }
+    .admin-link:hover { color: var(--teal); }
+    .dashboard-footer { display: flex; justify-content: space-between; gap: 18px; color: #66666d; font-size: 9px; }
+    .dashboard-footer a:hover { color: #ddd; }
+    @media (max-width: 600px) {
+      .topbar { min-height: 70px; }
+      .brand { gap: 8px; font-size: 9px; }
+      .brand img { width: 31px; height: 31px; }
+      .back-link { font-size: 10px; }
+      .page-shell { padding: 98px 16px 28px; }
+      .auth-card { min-height: 0; padding: 32px 25px; border-radius: 18px; }
+      h1 { font-size: 32px; }
+      .intro { font-size: 12px; }
+      .dashboard-shell { gap: 18px; }
+      .dashboard-top { align-items: flex-start; }
+      .dashboard-title h1 { font-size: 31px; }
+      .account-button { min-height: 42px; padding: 4px; }
+      .account-avatar { width: 32px; height: 32px; }
+      .account-email,.account-chevron { display: none; }
+      .welcome-panel { min-height: 270px; padding: 27px 22px; }
+      .welcome-panel h2 { font-size: 38px; }
+      .identity-panel { align-items: flex-start; flex-direction: column; }
+      .project-request-form { grid-template-columns: 1fr; }
+      .request-field-wide,.request-submit,.workspace-status { grid-column: 1; }
+      .request-card { padding: 15px; }
+      .request-card-top { flex-direction: column; }
+      .notification-item { grid-template-columns: 9px minmax(0,1fr); }
+      .notification-date { grid-column: 2; }
+      .dashboard-footer { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Runfourcode home"><img src="runfourcode-logo.jpg" alt="Runfourcode Official Logo"><span>RUNFOURCODE</span></a>
+    <a class="back-link" href="index.html"><i class="icon-arrow-left" aria-hidden="true"></i> Back to studio</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="auth-card" id="auth-view" aria-labelledby="auth-title">
+      <div class="card-mark"><img src="runfourcode-logo.jpg" alt="Runfourcode Official Logo"></div>
+      <p class="eyebrow">Runfourcode / Client access</p>
+      <h1 id="auth-title">Welcome back</h1>
+      <p class="intro" id="auth-intro">Sign in with your email and password to continue to your Runfourcode dashboard.</p>
+      <button class="google-button" id="google-sign-in" type="button"><span class="google-mark" aria-hidden="true">G</span><span>Continue with Google</span></button>
+      <div class="auth-divider" id="auth-divider" aria-hidden="true">or use email</div>
+      <div class="auth-tabs" id="auth-tabs" role="tablist" aria-label="Account access">
+        <button class="auth-tab" id="login-tab" type="button" role="tab" aria-selected="true" data-auth-mode="login">Log in</button>
+        <button class="auth-tab" id="signup-tab" type="button" role="tab" aria-selected="false" data-auth-mode="signup">Create account</button>
+      </div>
+      <form class="auth-form" id="auth-form">
+        <div class="auth-field" id="name-field" hidden><label for="full-name">Your name</label><input id="full-name" name="name" type="text" autocomplete="name" placeholder="Name" minlength="2"></div>
+        <div class="auth-field"><label for="auth-email">Email address</label><input id="auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="auth-field" id="password-field"><label for="auth-password">Password</label><div class="password-field"><input id="auth-password" name="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required><button class="password-toggle" id="password-toggle" type="button" aria-label="Show password"><i class="icon-eye" aria-hidden="true"></i></button></div></div>
+        <button class="forgot-link" id="forgot-link" type="button">Forgot password?</button>
+        <button class="back-to-login" id="back-to-login" type="button" hidden>Back to login</button>
+        <button class="auth-submit" id="auth-submit" type="submit"><span id="auth-submit-label">Log in</span><i class="icon-arrow-right" aria-hidden="true"></i></button>
+      </form>
+      <p class="auth-status" id="auth-status" role="status" aria-live="polite">Checking sign-in configuration...</p>
+      <div class="privacy-note"><i class="icon-shield-check" aria-hidden="true"></i><span>Your account is secured by Firebase Authentication.</span></div>
+    </section>
+
+    <section class="auth-card" id="verify-view" aria-labelledby="verify-title" hidden>
+      <div class="card-mark"><img src="runfourcode-logo.jpg" alt="Runfourcode Official Logo"></div>
+      <p class="eyebrow">One last step / Email verification</p>
+      <h1 id="verify-title">Check your inbox.</h1>
+      <p class="intro">We sent a verification link to this address. Verify it to unlock your Runfourcode dashboard.</p>
+      <p class="verification-email" id="verification-email"></p>
+      <div class="verification-actions"><button class="verification-button" id="resend-verification" type="button">Resend email</button><button class="verification-button" id="check-verification" type="button">I’ve verified</button></div>
+      <p class="auth-status" id="verification-status" role="status" aria-live="polite"></p>
+      <div class="privacy-note"><i class="icon-shield-check" aria-hidden="true"></i><span>Check your spam folder if the email doesn’t arrive.</span></div>
+    </section>
+
+    <section class="dashboard-shell" id="dashboard-view" aria-labelledby="dashboard-title" hidden>
+      <div class="dashboard-top">
+        <div class="dashboard-title"><p>Runfourcode / Private workspace</p><h1 id="dashboard-title">Your dashboard</h1></div>
+        <div class="account-wrap">
+          <button class="account-button" id="account-button" type="button" aria-expanded="false" aria-controls="account-menu" aria-label="Open account menu">
+            <span class="account-avatar" id="account-avatar" aria-hidden="true">R</span><span class="account-email" id="account-email"></span><i class="account-chevron icon-chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="account-menu" id="account-menu" hidden>
+            <div class="menu-profile"><span class="menu-name" id="account-name"></span><span class="menu-email" id="menu-email"></span><span class="provider-label" id="provider-label"><i class="icon-badge-check" aria-hidden="true"></i> Account connected</span></div>
+            <button class="signout-button" id="sign-out" type="button"><i class="icon-log-out" aria-hidden="true"></i> Sign out</button>
+          </div>
+        </div>
+      </div>
+      <div class="identity-panel"><div class="identity-copy"><span class="identity-label">Signed-in email</span><span class="identity-value" id="identity-email"></span></div><button class="change-email-button" id="change-email-toggle" type="button" aria-expanded="false" aria-controls="email-change-form">Change email</button><span class="verified-mark"><i class="icon-circle-check" aria-hidden="true"></i> Authenticated account</span></div>
+      <section class="dashboard-section request-panel" aria-labelledby="request-title">
+        <div class="section-head"><div><h2 id="request-title">Request a product</h2><p>Tell us what you want to build. Your private request will appear in this dashboard after submission.</p></div><span class="section-index">01 / NEW BRIEF</span></div>
+        <form class="project-request-form" id="project-request-form">
+          <div class="request-field"><label for="request-owner-name">Your name</label><input id="request-owner-name" name="ownerName" type="text" minlength="2" autocomplete="name" required></div>
+          <div class="request-field"><label for="request-owner-email">Account email</label><input id="request-owner-email" name="ownerEmail" type="email" autocomplete="email" readonly required></div>
+          <div class="request-field"><label for="request-business">Business name</label><input id="request-business" name="businessName" type="text" minlength="2" placeholder="Company or brand" required></div>
+          <div class="request-field"><label for="request-phone">Phone number</label><input id="request-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 555 000 0000" required></div>
+          <div class="request-field"><label for="request-category">What are you looking to build?</label><select id="request-category" name="category" required><option value="" disabled selected>Select a product type</option><option value="website">Website</option><option value="software">Software or digital product</option><option value="marketing">Marketing or growth system</option><option value="other">Something else</option></select></div>
+          <div class="request-field"><label for="request-product-name">Project name</label><input id="request-product-name" name="productName" type="text" minlength="2" placeholder="A working title is fine" required></div>
+          <div class="request-field request-field-wide"><label for="request-brief">Product idea and key features</label><textarea id="request-brief" name="brief" minlength="20" placeholder="What should we build? Include the important features or services you have in mind." required></textarea></div>
+          <div class="request-field request-field-wide"><label for="request-use-case">Use case and audience</label><textarea id="request-use-case" name="useCase" minlength="20" placeholder="Who will use it, what problem does it solve, and how should it work?" required></textarea></div>
+          <div class="request-field request-field-wide"><label for="request-goals">What does success look like?</label><textarea id="request-goals" name="goals" placeholder="Share your goals, inspiration, or any important details."></textarea></div>
+          <div class="request-field"><label for="request-website">Current website (optional)</label><input id="request-website" name="websiteUrl" type="url" placeholder="https://example.com"></div>
+          <div class="request-field"><label for="request-timeline">Ideal timeline</label><select id="request-timeline" name="timeline" required><option value="">Select a timeline</option><option>As soon as possible</option><option>Within 1 month</option><option>1–3 months</option><option>Flexible</option></select></div>
+          <div class="request-field"><label for="request-budget">Approximate budget</label><select id="request-budget" name="budgetRange" required><option value="">Select a range</option><option>Under ₹25,000</option><option>₹25,000–₹75,000</option><option>₹75,000–₹2,00,000</option><option>₹2,00,000+</option><option>Need guidance</option></select></div>
+          <button class="request-submit" id="request-submit" type="submit">Submit product request <i class="icon-arrow-up-right" aria-hidden="true"></i></button>
+          <p class="workspace-status" id="request-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="dashboard-section" aria-labelledby="projects-title"><div class="section-head"><div><h2 id="projects-title">Your projects</h2><p>Approval, progress, admin notes, and preview links appear here as they’re updated.</p></div><span class="section-index">02 / TRACKING</span></div><div class="request-list" id="project-list"><div class="empty-state">Loading your project requests...</div></div></section>
+      <section class="dashboard-section" aria-labelledby="notifications-title"><div class="section-head"><div><h2 id="notifications-title">Updates</h2><p>Recent decisions and notes from the Runfourcode team.</p></div><span class="section-index">03 / NOTIFICATIONS</span></div><div class="notification-list" id="notification-list"><div class="empty-state">Your project updates will appear here.</div></div></section>
+      <form class="email-change-form" id="email-change-form" hidden>
+        <h2>Change your sign-in email</h2>
+        <div class="auth-field"><label for="new-email">New email address</label><input id="new-email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="auth-field" id="change-password-field"><label for="change-password">Current password</label><input id="change-password" type="password" autocomplete="current-password" placeholder="Confirm your password" minlength="6"></div>
+        <p class="email-change-status" id="email-change-status" role="status" aria-live="polite"></p>
+        <button class="email-change-submit" id="email-change-submit" type="submit">Send confirmation email</button>
+      </form>
+      <footer class="dashboard-footer"><span>Runfourcode / Digital Studio</span><a class="admin-link" id="admin-link" href="admin.html" hidden><i class="icon-shield" aria-hidden="true"></i> Company admin</a><a href="index.html">Return to the studio</a></footer>
+    </section>
+  </main>
+
+  <script type="module">
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhRYD8pse8SBwn_43jNpB-ru3tttJsIFc",
+      authDomain: "official-project-70afc.firebaseapp.com",
+      projectId: "official-project-70afc",
+      storageBucket: "official-project-70afc.firebasestorage.app",
+      messagingSenderId: "986137334088",
+      appId: "1:986137334088:web:5e454e72d525e49d27a37d",
+      measurementId: "G-NEQVDK70HL"
+    };
+
+    const authView = document.getElementById("auth-view");
+    const verifyView = document.getElementById("verify-view");
+    const dashboardView = document.getElementById("dashboard-view");
+    const authStatus = document.getElementById("auth-status");
+    const verificationStatus = document.getElementById("verification-status");
+    const verificationEmail = document.getElementById("verification-email");
+    const resendVerificationButton = document.getElementById("resend-verification");
+    const checkVerificationButton = document.getElementById("check-verification");
+    const googleSignInButton = document.getElementById("google-sign-in");
+    const googleDivider = document.getElementById("auth-divider");
+    const authForm = document.getElementById("auth-form");
+    const authTabs = document.getElementById("auth-tabs");
+    const authTitle = document.getElementById("auth-title");
+    const authIntro = document.getElementById("auth-intro");
+    const authSubmit = document.getElementById("auth-submit");
+    const authSubmitLabel = document.getElementById("auth-submit-label");
+    const nameField = document.getElementById("name-field");
+    const nameInput = document.getElementById("full-name");
+    const emailInput = document.getElementById("auth-email");
+    const passwordField = document.getElementById("password-field");
+    const passwordInput = document.getElementById("auth-password");
+    const forgotLink = document.getElementById("forgot-link");
+    const backToLogin = document.getElementById("back-to-login");
+    const passwordToggle = document.getElementById("password-toggle");
+    const accountButton = document.getElementById("account-button");
+    const accountMenu = document.getElementById("account-menu");
+    const signOutButton = document.getElementById("sign-out");
+    const emailChangeToggle = document.getElementById("change-email-toggle");
+    const emailChangeForm = document.getElementById("email-change-form");
+    const changePasswordField = document.getElementById("change-password-field");
+    const changePasswordInput = document.getElementById("change-password");
+    const newEmailInput = document.getElementById("new-email");
+    const emailChangeStatus = document.getElementById("email-change-status");
+    const emailChangeSubmit = document.getElementById("email-change-submit");
+    const projectRequestForm = document.getElementById("project-request-form");
+    const requestStatus = document.getElementById("request-status");
+    const requestSubmit = document.getElementById("request-submit");
+    const projectList = document.getElementById("project-list");
+    const notificationList = document.getElementById("notification-list");
+    const adminLink = document.getElementById("admin-link");
+    let auth;
+    let db;
+    let currentUser = null;
+    let googleProvider;
+    let signInWithPopup;
+    let signInWithRedirect;
+    let createUserWithEmailAndPassword;
+    let signInWithEmailAndPassword;
+    let sendPasswordResetEmail;
+    let sendEmailVerification;
+    let verifyBeforeUpdateEmail;
+    let reloadUser;
+    let EmailAuthProvider;
+    let reauthenticateWithCredential;
+    let reauthenticateWithPopup;
+    let updateProfile;
+    let signOut;
+    let addDoc;
+    let collection;
+    let doc;
+    let getDoc;
+    let onSnapshot;
+    let query;
+    let where;
+    let serverTimestamp;
+    let projectUnsubscribe = null;
+    const updateUnsubscribers = new Map();
+    const projectUpdates = new Map();
+    let firebaseReady = false;
+    let authMode = "login";
+
+    function showSignIn(message, kind = "") {
+      dashboardView.hidden = true;
+      verifyView.hidden = true;
+      authView.hidden = false;
+      authStatus.textContent = message;
+      authStatus.dataset.kind = kind;
+    }
+
+    function showVerification(user, message = "A verification email is on its way.", kind = "success") {
+      authView.hidden = true;
+      dashboardView.hidden = true;
+      verifyView.hidden = false;
+      verificationEmail.textContent = user.email || "your email address";
+      verificationStatus.textContent = message;
+      verificationStatus.dataset.kind = kind;
+    }
+
+    function showDashboard(user) {
+      authView.hidden = true;
+      verifyView.hidden = true;
+      dashboardView.hidden = false;
+      const email = user.email || "Signed-in account";
+      const displayName = user.displayName || email.split("@")[0] || "there";
+      document.getElementById("request-owner-name").value = user.displayName || "";
+      document.getElementById("request-owner-email").value = email;
+      const planName = new URLSearchParams(window.location.search).get("plan");
+      if (["Showcase Website", "Online Business Management"].includes(planName)) {
+        document.getElementById("request-product-name").value = planName;
+      }
+      document.getElementById("account-name").textContent = displayName;
+      document.getElementById("account-email").textContent = email;
+      document.getElementById("menu-email").textContent = email;
+      const usesPassword = user.providerData.some((provider) => provider.providerId === "password");
+      const usesGoogle = user.providerData.some((provider) => provider.providerId === "google.com");
+      document.getElementById("provider-label").lastChild.textContent = usesPassword ? " Email and password connected" : usesGoogle ? " Google account connected" : " Account connected";
+      changePasswordField.hidden = !usesPassword;
+      changePasswordInput.required = usesPassword;
+      document.getElementById("identity-email").textContent = email;
+      document.getElementById("welcome-name").textContent = `${displayName}.`;
+      const avatar = document.getElementById("account-avatar");
+      avatar.replaceChildren();
+      if (user.photoURL) {
+        const image = document.createElement("img");
+        image.src = user.photoURL;
+        image.alt = "";
+        avatar.append(image);
+      } else {
+        avatar.textContent = displayName.slice(0, 1).toUpperCase();
+      }
+      startClientWorkspace(user);
+    }
+
+    function authErrorMessage(error, method = "email") {
+      const guidance = {
+        "auth/api-key-not-valid.-please-pass-a-valid-api-key.": "Firebase rejected this Web API key. Copy the current key from Firebase Console > Project settings > General > Your apps. In Google Cloud, confirm Identity Toolkit API is enabled and the key's application restrictions allow this site origin.",
+        "auth/unauthorized-domain": "Add this exact site hostname under Firebase Authentication > Settings > Authorized domains.",
+        "auth/operation-not-allowed": method === "google" ? "Enable Google under Firebase Authentication > Sign-in method." : "Enable Email/Password under Firebase Authentication > Sign-in method.",
+        "auth/invalid-api-key": "Check that the Firebase Web API key in this page matches the project.",
+        "auth/network-request-failed": "The browser could not reach Firebase. Check the connection, VPN, or content blockers.",
+        "auth/invalid-email": "Enter a valid email address and try again.",
+        "auth/weak-password": "Choose a password with at least 6 characters.",
+        "auth/email-already-in-use": "An account already exists for this email. Log in instead.",
+        "auth/invalid-credential": "Email or password is incorrect. Check both and try again.",
+        "auth/requires-recent-login": "For security, sign in again before changing your email address.",
+        "auth/user-disabled": "This account has been disabled. Contact the site administrator.",
+        "auth/too-many-requests": "Too many attempts were made. Wait a little and try again."
+      };
+      const code = error.code || error.name || "unknown-error";
+      return `Account action failed (${code}). ${guidance[code] || "Check Firebase Authentication settings and try again."}`;
+    }
+
+    function formatDate(value) {
+      if (!value || typeof value.toDate !== "function") return "Just now";
+      return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(value.toDate());
+    }
+
+    function addTextElement(parent, tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      element.textContent = text;
+      parent.append(element);
+      return element;
+    }
+
+    function renderProjects(projects) {
+      projectList.replaceChildren();
+      if (!projects.length) {
+        addTextElement(projectList, "div", "empty-state", "No product requests yet. Submit your first brief above and the Runfourcode team will review it.");
+        return;
+      }
+      projects.forEach(({ id, data }) => {
+        const card = document.createElement("article");
+        card.className = "request-card";
+        const top = document.createElement("div");
+        top.className = "request-card-top";
+        const heading = document.createElement("div");
+        addTextElement(heading, "h3", "", data.productName || "Untitled project");
+        const meta = document.createElement("div");
+        meta.className = "request-meta";
+        addTextElement(meta, "span", "", data.category || "Product");
+        addTextElement(meta, "span", "", data.businessName || "Business");
+        addTextElement(meta, "span", "", `Submitted ${formatDate(data.createdAt)}`);
+        heading.append(meta);
+        top.append(heading);
+        const status = addTextElement(top, "span", "request-status", (data.status || "pending").replaceAll("-", " "));
+        status.dataset.status = data.status || "pending";
+        card.append(top);
+        const progress = document.createElement("div");
+        progress.className = "request-progress";
+        const progressLabel = document.createElement("div");
+        progressLabel.className = "request-progress-label";
+        addTextElement(progressLabel, "span", "", data.status === "declined" ? "Request decision" : "Project progress");
+        addTextElement(progressLabel, "span", "", `${Math.max(0, Math.min(100, Number(data.progress) || 0))}%`);
+        const track = document.createElement("div");
+        track.className = "request-progress-track";
+        const fill = document.createElement("div");
+        fill.className = "request-progress-fill";
+        fill.style.width = `${Math.max(0, Math.min(100, Number(data.progress) || 0))}%`;
+        track.append(fill);
+        progress.append(progressLabel, track);
+        card.append(progress);
+        if (data.adminNote) addTextElement(card, "p", "request-note", `Team update: ${data.adminNote}`);
+        const actions = document.createElement("div");
+        actions.className = "request-actions";
+        addTextElement(actions, "span", "request-meta", data.status === "pending" ? "Your request is waiting for review." : `Last updated ${formatDate(data.updatedAt)}`);
+        if (data.previewUrl) {
+          try {
+            const preview = new URL(data.previewUrl);
+            if (["https:", "http:"].includes(preview.protocol)) {
+              const link = document.createElement("a");
+              link.className = "request-link";
+              link.href = preview.href;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              link.innerHTML = '<i class="icon-external-link" aria-hidden="true"></i> Open preview';
+              actions.append(link);
+            }
+          } catch (error) {
+            console.warn("Ignoring invalid project preview URL.");
+          }
+        }
+        card.append(actions);
+        projectList.append(card);
+      });
+    }
+
+    function renderNotifications() {
+      const notifications = [];
+      projectUpdates.forEach((updates, projectId) => {
+        updates.forEach((update) => notifications.push({ ...update, projectId }));
+      });
+      notifications.sort((left, right) => (right.createdAt?.toMillis?.() || 0) - (left.createdAt?.toMillis?.() || 0));
+      notificationList.replaceChildren();
+      if (!notifications.length) {
+        addTextElement(notificationList, "div", "empty-state", "No team updates yet. Status changes and admin notes will show here.");
+        return;
+      }
+      notifications.slice(0, 12).forEach((update) => {
+        const item = document.createElement("article");
+        item.className = "notification-item";
+        const dot = document.createElement("span");
+        dot.className = "notification-dot";
+        dot.setAttribute("aria-hidden", "true");
+        item.append(dot);
+        const content = document.createElement("div");
+        const project = document.createElement("strong");
+        project.textContent = `${update.productName || "Project update"}: `;
+        const message = document.createElement("p");
+        message.className = "notification-message";
+        message.append(project, document.createTextNode(update.message || `Status: ${(update.status || "updated").replaceAll("-", " ")}`));
+        content.append(message);
+        item.append(content);
+        addTextElement(item, "time", "notification-date", formatDate(update.createdAt));
+        notificationList.append(item);
+      });
+    }
+
+    function watchProjectUpdates(projectId, productName) {
+      const updatesQuery = collection(db, "projects", projectId, "updates");
+      const unsubscribe = onSnapshot(updatesQuery, (snapshot) => {
+        projectUpdates.set(projectId, snapshot.docs.map((item) => ({ ...item.data(), productName })));
+        renderNotifications();
+      }, (error) => {
+        console.error("Could not load project updates:", error);
+      });
+      updateUnsubscribers.set(projectId, unsubscribe);
+    }
+
+    function startClientWorkspace(user) {
+      if (projectUnsubscribe) projectUnsubscribe();
+      updateUnsubscribers.forEach((unsubscribe) => unsubscribe());
+      updateUnsubscribers.clear();
+      projectUpdates.clear();
+      adminLink.hidden = true;
+      projectList.replaceChildren();
+      addTextElement(projectList, "div", "empty-state", "Loading your project requests...");
+      getDoc(doc(db, "admins", user.uid)).then((adminSnapshot) => {
+        adminLink.hidden = !adminSnapshot.exists() || adminSnapshot.data().active !== true;
+      }).catch(() => { adminLink.hidden = true; });
+      const ownProjects = query(collection(db, "projects"), where("ownerUid", "==", user.uid));
+      projectUnsubscribe = onSnapshot(ownProjects, (snapshot) => {
+        const projects = snapshot.docs.map((item) => ({ id: item.id, data: item.data() }));
+        projects.sort((left, right) => (right.data.createdAt?.toMillis?.() || 0) - (left.data.createdAt?.toMillis?.() || 0));
+        const activeIds = new Set(projects.map((project) => project.id));
+        updateUnsubscribers.forEach((unsubscribe, projectId) => {
+          if (!activeIds.has(projectId)) {
+            unsubscribe();
+            updateUnsubscribers.delete(projectId);
+            projectUpdates.delete(projectId);
+          }
+        });
+        projects.forEach((project) => {
+          if (!updateUnsubscribers.has(project.id)) watchProjectUpdates(project.id, project.data.productName);
+        });
+        renderProjects(projects);
+        renderNotifications();
+      }, (error) => {
+        console.error("Could not load project requests:", error);
+        addTextElement(projectList, "div", "empty-state", "Could not load your requests. Check your Firestore rules and connection.");
+      });
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      const isSignup = mode === "signup";
+      const isReset = mode === "reset";
+      authTitle.textContent = isReset ? "Reset your password" : isSignup ? "Create your account" : "Welcome back";
+      authIntro.textContent = isReset ? "Enter your account email and we’ll send you a password reset link." : isSignup ? "Create an account to continue to your Runfourcode dashboard." : "Log in with your email and password to continue to your dashboard.";
+      authTabs.hidden = isReset;
+      document.querySelectorAll("[data-auth-mode]").forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.authMode === mode)));
+      nameField.hidden = !isSignup;
+      nameInput.required = isSignup;
+      passwordField.hidden = isReset;
+      passwordInput.required = !isReset;
+      passwordInput.autocomplete = isSignup ? "new-password" : "current-password";
+      forgotLink.hidden = isSignup || isReset;
+      backToLogin.hidden = !isReset;
+      googleSignInButton.hidden = isReset;
+      googleDivider.hidden = isReset;
+      authSubmitLabel.textContent = isReset ? "Send reset link" : isSignup ? "Create account" : "Log in";
+      authStatus.textContent = "";
+      authStatus.dataset.kind = "";
+    }
+
+    authTabs.querySelectorAll("[data-auth-mode]").forEach((tab) => tab.addEventListener("click", () => setAuthMode(tab.dataset.authMode)));
+    forgotLink.addEventListener("click", () => setAuthMode("reset"));
+    backToLogin.addEventListener("click", () => setAuthMode("login"));
+    passwordToggle.addEventListener("click", () => {
+      const isVisible = passwordInput.type === "text";
+      passwordInput.type = isVisible ? "password" : "text";
+      passwordToggle.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+      passwordToggle.innerHTML = `<i class="icon-${isVisible ? "eye" : "eye-off"}" aria-hidden="true"></i>`;
+    });
+
+    googleSignInButton.addEventListener("click", async () => {
+      if (!firebaseReady) {
+        showSignIn("Firebase is not ready. Check the project configuration and reload.", "error");
+        return;
+      }
+      googleSignInButton.disabled = true;
+      authStatus.textContent = "Opening secure Google sign-in...";
+      authStatus.dataset.kind = "";
+      try {
+        await signInWithPopup(auth, googleProvider);
+      } catch (error) {
+        console.error("Firebase Google sign-in error:", error);
+        if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment"].includes(error.code)) {
+          try {
+            authStatus.textContent = "Popup unavailable. Continuing with secure redirect sign-in...";
+            await signInWithRedirect(auth, googleProvider);
+            return;
+          } catch (redirectError) {
+            error = redirectError;
+            console.error("Firebase Google redirect error:", error);
+          }
+        }
+        authStatus.textContent = authErrorMessage(error, "google");
+        authStatus.dataset.kind = "error";
+      } finally {
+        googleSignInButton.disabled = false;
+      }
+    });
+
+    authForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!authForm.reportValidity()) return;
+      if (!firebaseReady) {
+        showSignIn("Firebase is not ready. Check the Firebase project configuration and reload.", "error");
+        return;
+      }
+      authSubmit.disabled = true;
+      authStatus.textContent = authMode === "reset" ? "Sending password reset email..." : authMode === "signup" ? "Creating your account..." : "Signing in...";
+      authStatus.dataset.kind = "";
+      const email = emailInput.value.trim();
+      try {
+        if (authMode === "reset") {
+          await sendPasswordResetEmail(auth, email);
+          authStatus.textContent = "If an account exists for this email, a password reset link is on its way.";
+          authStatus.dataset.kind = "success";
+          return;
+        }
+        if (authMode === "signup") {
+          const credential = await createUserWithEmailAndPassword(auth, email, passwordInput.value);
+          const displayName = nameInput.value.trim();
+          if (displayName) await updateProfile(credential.user, { displayName });
+          currentUser = credential.user;
+          try {
+            await sendEmailVerification(currentUser);
+            showVerification(currentUser, "Verification email sent. Open the link in your inbox, then return here.");
+          } catch (verificationError) {
+            console.error("Firebase verification email error:", verificationError);
+            showVerification(currentUser, authErrorMessage(verificationError), "error");
+          }
+          return;
+        }
+        await signInWithEmailAndPassword(auth, email, passwordInput.value);
+      } catch (error) {
+        console.error("Firebase email authentication error:", error);
+        authStatus.textContent = authErrorMessage(error);
+        authStatus.dataset.kind = "error";
+      } finally {
+        authSubmit.disabled = false;
+      }
+    });
+
+    resendVerificationButton.addEventListener("click", async () => {
+      if (!currentUser) return;
+      resendVerificationButton.disabled = true;
+      verificationStatus.textContent = "Sending another verification email...";
+      verificationStatus.dataset.kind = "";
+      try {
+        await sendEmailVerification(currentUser);
+        verificationStatus.textContent = "A fresh verification link has been sent.";
+        verificationStatus.dataset.kind = "success";
+      } catch (error) {
+        verificationStatus.textContent = authErrorMessage(error);
+        verificationStatus.dataset.kind = "error";
+      } finally {
+        resendVerificationButton.disabled = false;
+      }
+    });
+
+    checkVerificationButton.addEventListener("click", async () => {
+      if (!currentUser) return;
+      checkVerificationButton.disabled = true;
+      verificationStatus.textContent = "Checking verification status...";
+      verificationStatus.dataset.kind = "";
+      try {
+        await reloadUser(currentUser);
+        currentUser = auth.currentUser;
+        if (currentUser?.emailVerified) showDashboard(currentUser);
+        else {
+          verificationStatus.textContent = "Your email is not verified yet. Open the link in the email, then check again.";
+          verificationStatus.dataset.kind = "error";
+        }
+      } catch (error) {
+        verificationStatus.textContent = authErrorMessage(error);
+        verificationStatus.dataset.kind = "error";
+      } finally {
+        checkVerificationButton.disabled = false;
+      }
+    });
+
+    projectRequestForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!projectRequestForm.reportValidity() || !auth.currentUser) return;
+      requestSubmit.disabled = true;
+      requestStatus.textContent = "Submitting your product request securely...";
+      requestStatus.dataset.kind = "";
+      const value = (name) => projectRequestForm.elements.namedItem(name).value.trim();
+      const user = auth.currentUser;
+      try {
+        await addDoc(collection(db, "projects"), {
+          ownerUid: user.uid,
+          ownerName: value("ownerName"),
+          ownerEmail: user.email,
+          businessName: value("businessName"),
+          phone: value("phone"),
+          category: value("category"),
+          productName: value("productName"),
+          brief: value("brief"),
+          useCase: value("useCase"),
+          goals: value("goals"),
+          websiteUrl: value("websiteUrl"),
+          budgetRange: value("budgetRange"),
+          timeline: value("timeline"),
+          status: "pending",
+          progress: 0,
+          previewUrl: "",
+          adminNote: "",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        projectRequestForm.reset();
+        document.getElementById("request-owner-name").value = user.displayName || "";
+        document.getElementById("request-owner-email").value = user.email || "";
+        requestStatus.textContent = "Request submitted. The Runfourcode team will review it and post updates here.";
+        requestStatus.dataset.kind = "success";
+      } catch (error) {
+        console.error("Could not submit product request:", error);
+        requestStatus.textContent = error.code ? authErrorMessage(error) : "Request could not be submitted. Check your connection and try again.";
+        requestStatus.dataset.kind = "error";
+      } finally {
+        requestSubmit.disabled = false;
+      }
+    });
+
+    accountButton.addEventListener("click", () => {
+      const isOpen = accountButton.getAttribute("aria-expanded") === "true";
+      accountButton.setAttribute("aria-expanded", String(!isOpen));
+      accountMenu.hidden = isOpen;
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (!event.target.closest(".account-wrap")) {
+        accountMenu.hidden = true;
+        accountButton.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        accountMenu.hidden = true;
+        accountButton.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    signOutButton.addEventListener("click", async () => {
+      if (!firebaseReady) return;
+      signOutButton.disabled = true;
+      try {
+        await signOut(auth);
+        accountMenu.hidden = true;
+        accountButton.setAttribute("aria-expanded", "false");
+      } catch (error) {
+        accountMenu.hidden = false;
+      } finally {
+        signOutButton.disabled = false;
+      }
+    });
+
+    emailChangeToggle.addEventListener("click", () => {
+      const isOpen = emailChangeToggle.getAttribute("aria-expanded") === "true";
+      emailChangeToggle.setAttribute("aria-expanded", String(!isOpen));
+      emailChangeForm.hidden = isOpen;
+      emailChangeStatus.textContent = "";
+      emailChangeStatus.dataset.kind = "";
+      if (!isOpen) newEmailInput.focus();
+    });
+
+    emailChangeForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!emailChangeForm.reportValidity() || !auth.currentUser) return;
+      const user = auth.currentUser;
+      const nextEmail = newEmailInput.value.trim();
+      if (nextEmail.toLowerCase() === (user.email || "").toLowerCase()) {
+        emailChangeStatus.textContent = "That is already the email address on this account.";
+        emailChangeStatus.dataset.kind = "error";
+        return;
+      }
+      emailChangeSubmit.disabled = true;
+      emailChangeStatus.textContent = "Confirming your identity and sending the change link...";
+      emailChangeStatus.dataset.kind = "";
+      try {
+        const providers = user.providerData.map((provider) => provider.providerId);
+        if (providers.includes("password")) {
+          const credential = EmailAuthProvider.credential(user.email, changePasswordInput.value);
+          await reauthenticateWithCredential(user, credential);
+        } else if (providers.includes("google.com")) {
+          await reauthenticateWithPopup(user, googleProvider);
+        } else {
+          throw new Error("This account provider does not support email changes here.");
+        }
+        await verifyBeforeUpdateEmail(user, nextEmail);
+        emailChangeStatus.textContent = "Confirmation sent. Open the link sent to the new address to complete the change.";
+        emailChangeStatus.dataset.kind = "success";
+      } catch (error) {
+        console.error("Firebase email change error:", error);
+        emailChangeStatus.textContent = error.code ? authErrorMessage(error) : error.message;
+        emailChangeStatus.dataset.kind = "error";
+      } finally {
+        emailChangeSubmit.disabled = false;
+      }
+    });
+
+    const configMissing = Object.values(firebaseConfig).some((value) => !value || value.startsWith("YOUR_"));
+    if (configMissing) {
+      showSignIn("Firebase is not configured yet. Add your Firebase Web App settings in dashboard.html to enable email sign-in.", "error");
+    } else {
+      try {
+        const [appSdk, authSdk, firestoreSdk] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js")
+        ]);
+        const app = appSdk.initializeApp(firebaseConfig);
+        auth = authSdk.getAuth(app);
+        db = firestoreSdk.getFirestore(app);
+        addDoc = firestoreSdk.addDoc;
+        collection = firestoreSdk.collection;
+        doc = firestoreSdk.doc;
+        getDoc = firestoreSdk.getDoc;
+        onSnapshot = firestoreSdk.onSnapshot;
+        query = firestoreSdk.query;
+        where = firestoreSdk.where;
+        serverTimestamp = firestoreSdk.serverTimestamp;
+        googleProvider = new authSdk.GoogleAuthProvider();
+        googleProvider.setCustomParameters({ prompt: "select_account" });
+        signInWithPopup = authSdk.signInWithPopup;
+        signInWithRedirect = authSdk.signInWithRedirect;
+        createUserWithEmailAndPassword = authSdk.createUserWithEmailAndPassword;
+        signInWithEmailAndPassword = authSdk.signInWithEmailAndPassword;
+        sendPasswordResetEmail = authSdk.sendPasswordResetEmail;
+        sendEmailVerification = authSdk.sendEmailVerification;
+        verifyBeforeUpdateEmail = authSdk.verifyBeforeUpdateEmail;
+        reloadUser = authSdk.reload;
+        EmailAuthProvider = authSdk.EmailAuthProvider;
+        reauthenticateWithCredential = authSdk.reauthenticateWithCredential;
+        reauthenticateWithPopup = authSdk.reauthenticateWithPopup;
+        updateProfile = authSdk.updateProfile;
+        signOut = authSdk.signOut;
+        firebaseReady = true;
+        authSdk.getRedirectResult(auth).catch((error) => {
+          console.error("Firebase Google redirect result error:", error);
+          authStatus.textContent = authErrorMessage(error, "google");
+          authStatus.dataset.kind = "error";
+        });
+        authSdk.onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          if (user && user.emailVerified) showDashboard(user);
+          else if (user) showVerification(user, "Verify your email address to continue to the dashboard.", "");
+          else showSignIn("Log in or create an account with your email and password.");
+        });
+        try {
+          const analyticsSdk = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js");
+          if (await analyticsSdk.isSupported()) analyticsSdk.getAnalytics(app);
+        } catch (error) {
+          console.info("Firebase Analytics is unavailable in this browser.");
+        }
+      } catch (error) {
+        showSignIn("Firebase could not be reached. Check your connection and Firebase project settings.", "error");
+      }
+    }
+  </script>
+</body>
+</html>

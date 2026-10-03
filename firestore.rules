@@ -1,0 +1,114 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      let adminPath = /databases/$(database)/documents/admins/$(request.auth.uid);
+      return signedIn() && exists(adminPath) && get(adminPath).data.active == true;
+    }
+
+    function ownsProject(ownerUid) {
+      return signedIn() && request.auth.uid == ownerUid;
+    }
+
+    function projectPath(projectId) {
+      return /databases/$(database)/documents/projects/$(projectId);
+    }
+
+    match /admins/{adminUid} {
+      allow get: if signedIn() && request.auth.uid == adminUid;
+      allow list, create, update, delete: if false;
+    }
+
+    match /projects/{projectId} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll([
+          'ownerUid', 'ownerName', 'ownerEmail', 'businessName', 'phone',
+          'category', 'productName', 'brief', 'useCase', 'goals', 'websiteUrl',
+          'budgetRange', 'timeline', 'createdAt', 'updatedAt', 'status',
+          'progress', 'previewUrl', 'adminNote'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'ownerUid', 'ownerName', 'ownerEmail', 'businessName', 'phone',
+          'category', 'productName', 'brief', 'useCase', 'goals', 'websiteUrl',
+          'budgetRange', 'timeline', 'createdAt', 'updatedAt', 'status',
+          'progress', 'previewUrl', 'adminNote'
+        ])
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerEmail == request.auth.token.email
+        && request.resource.data.ownerName is string
+        && request.resource.data.ownerName.size() >= 2
+        && request.resource.data.businessName is string
+        && request.resource.data.businessName.size() >= 2
+        && request.resource.data.phone is string
+        && request.resource.data.category in ['website', 'software', 'marketing', 'other']
+        && request.resource.data.productName is string
+        && request.resource.data.productName.size() >= 2
+        && request.resource.data.brief is string
+        && request.resource.data.brief.size() >= 20
+        && request.resource.data.useCase is string
+        && request.resource.data.useCase.size() >= 20
+        && request.resource.data.goals is string
+        && request.resource.data.websiteUrl is string
+        && request.resource.data.budgetRange is string
+        && request.resource.data.timeline is string
+        && request.resource.data.status == 'pending'
+        && request.resource.data.progress == 0
+        && request.resource.data.previewUrl == ''
+        && request.resource.data.adminNote == ''
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow get, list: if isAdmin() || ownsProject(resource.data.ownerUid);
+
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'progress', 'previewUrl', 'adminNote', 'updatedAt'
+        ])
+        && request.resource.data.status in [
+          'pending', 'approved', 'declined', 'in-progress', 'review', 'completed'
+        ]
+        && request.resource.data.progress is int
+        && request.resource.data.progress >= 0
+        && request.resource.data.progress <= 100
+        && request.resource.data.previewUrl is string
+        && request.resource.data.adminNote is string
+        && request.resource.data.updatedAt == request.time;
+
+      allow delete: if false;
+
+      match /updates/{updateId} {
+        allow get, list: if isAdmin()
+          || ownsProject(get(projectPath(projectId)).data.ownerUid);
+
+        allow create: if isAdmin()
+          && request.resource.data.keys().hasAll([
+            'type', 'status', 'progress', 'previewUrl', 'message', 'authorUid', 'createdAt'
+          ])
+          && request.resource.data.keys().hasOnly([
+            'type', 'status', 'progress', 'previewUrl', 'message', 'authorUid', 'createdAt'
+          ])
+          && request.resource.data.type == 'project_update'
+          && request.resource.data.status in [
+            'pending', 'approved', 'declined', 'in-progress', 'review', 'completed'
+          ]
+          && request.resource.data.progress is int
+          && request.resource.data.progress >= 0
+          && request.resource.data.progress <= 100
+          && request.resource.data.previewUrl is string
+          && request.resource.data.message is string
+          && request.resource.data.authorUid == request.auth.uid
+          && request.resource.data.createdAt == request.time;
+
+        allow update, delete: if false;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -3,595 +3,444 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090b14">
-  <meta name="description" content="Runfourcode builds websites, custom software, products, and digital growth systems for modern businesses.">
-  <title>Runfourcode — Digital Studio</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Runfourcode is an independent digital studio building refined websites, software products, and growth systems for ambitious businesses.">
+  <meta property="og:title" content="Runfourcode — Pro design. Pro code.">
+  <meta property="og:description" content="We build digital experiences that move businesses forward.">
+  <meta property="og:image" content="https://runfourcode.com/runfourcode-logo.jpg">
+  <meta property="og:type" content="website">
+  <title>Runfourcode — Pro design. Pro code.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.468.0/font/lucide.css">
   <style>
     :root {
       color-scheme: dark;
-      --bg: #090b14;
-      --panel: rgba(19, 22, 37, .74);
-      --panel-solid: #151827;
-      --white: #f5f6fc;
-      --muted: #a8adbf;
-      --violet: #9a83ff;
-      --cyan: #72e8ef;
-      --line: rgba(226, 231, 255, .13);
-      --ease: cubic-bezier(.16, 1, .3, 1);
-      --slide-time: 950ms;
+      --black: #000;
+      --surface: #101012;
+      --surface-raised: #17171a;
+      --white: #f5f5f7;
+      --muted: #86868b;
+      --subtle: #5f6065;
+      --line: rgba(255,255,255,.11);
+      --purple: #8b5cf6;
+      --teal: #2dd4bf;
+      --content: 1160px;
+      --ease: cubic-bezier(.2,.8,.2,1);
     }
-
-    * { box-sizing: border-box; }
-    html, body { width: 100%; min-height: 100%; margin: 0; }
-    body { overflow: hidden; background: var(--bg); color: var(--white); font-family: "Manrope", sans-serif; }
-    button, a { font: inherit; }
-    button { color: inherit; }
+    *,*::before,*::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body { min-width: 320px; margin: 0; overflow-x: hidden; background: var(--black); color: var(--white); font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; -webkit-font-smoothing: antialiased; }
+    body::before { position: fixed; z-index: -1; inset: 0; background: radial-gradient(ellipse at 50% -24%,rgba(139,92,246,.15),transparent 56%),radial-gradient(ellipse at 92% 44%,rgba(45,212,191,.065),transparent 35%),#000; content: ""; pointer-events: none; }
     a { color: inherit; text-decoration: none; }
-    button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+    button,input,textarea { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    img { max-width: 100%; }
+    .container { width: min(calc(100% - 64px),var(--content)); margin-inline: auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0; color: #a7a7ad; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .eyebrow::before { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 16px rgba(45,212,191,.8); content: ""; }
+    .section { position: relative; padding-block: 144px; }
+    .section-heading { max-width: 760px; margin-bottom: 54px; }
+    .section-heading h2 { margin: 17px 0 0; font-size: 56px; font-weight: 700; line-height: 1.04; letter-spacing: 0; }
+    .section-heading p:last-child { max-width: 560px; margin: 18px 0 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+    .gradient-text { color: transparent; background: linear-gradient(100deg,#cbb9ff 0%,#f4f4f7 48%,#8ceade 100%); -webkit-background-clip: text; background-clip: text; }
+    .glass { border: 1px solid var(--line); background: linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018)); box-shadow: inset 0 1px rgba(255,255,255,.035); backdrop-filter: blur(22px); }
 
-    .ambient { position: fixed; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 50% 110%, rgba(90, 77, 173, .17), transparent 52%), var(--bg); }
-    #ambient-canvas { width: 100%; height: 100%; display: block; opacity: .52; }
-    .ambient::after { position: absolute; inset: 0; content: ""; opacity: .12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
-    .vignette { position: fixed; z-index: 1; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 34%, rgba(3, 4, 10, .62) 100%); }
-    .cursor-glow { position: fixed; z-index: 3; top: 50%; left: 50%; width: 340px; height: 340px; border-radius: 50%; opacity: 0; pointer-events: none; background: radial-gradient(circle, rgba(114,232,239,.09), rgba(154,131,255,.035) 34%, transparent 70%); transform: translate(-50%,-50%); transition: opacity 350ms ease; }
-    .cursor-glow.is-visible { opacity: 1; }
+    .site-header { position: fixed; z-index: 100; top: 18px; left: 50%; display: flex; width: min(calc(100% - 40px),1040px); min-height: 62px; align-items: center; justify-content: space-between; gap: 25px; padding: 9px 11px 9px 18px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(10,10,12,.76); box-shadow: 0 12px 46px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.05); backdrop-filter: blur(24px) saturate(1.25); transform: translateX(-50%); transition: border-color 250ms ease,background 250ms ease; }
+    .site-header.is-scrolled { border-color: rgba(255,255,255,.17); background: rgba(10,10,12,.9); }
+    .brand { display: inline-flex; min-width: max-content; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .09em; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; }
+    .brand span { color: #dfe0e5; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a { color: #b5b5bb; font-size: 11px; font-weight: 500; transition: color 200ms ease; }
+    .nav-links a:hover,.nav-links a[aria-current="location"] { color: var(--white); }
+    .nav-cta { display: inline-flex; min-height: 40px; align-items: center; gap: 8px; padding: 0 15px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; background: rgba(255,255,255,.08); font-size: 11px; font-weight: 600; transition: background 200ms ease,border-color 200ms ease,transform 200ms ease; }
+    .nav-cta:hover { border-color: rgba(45,212,191,.45); background: rgba(45,212,191,.1); }
+    .menu-toggle { display: none; width: 40px; height: 40px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: rgba(255,255,255,.06); cursor: pointer; }
 
-    .deck { position: relative; z-index: 2; width: 100%; height: 100svh; overflow: hidden; perspective: 1600px; transform-style: preserve-3d; }
-    .slide { position: absolute; inset: 0; display: grid; align-items: center; padding: clamp(64px, 8vh, 92px) clamp(22px, 7vw, 112px) 136px; opacity: 0; visibility: hidden; pointer-events: none; transform: translate3d(0, 0, -180px) scale(.96); transform-origin: 50% 50%; transform-style: preserve-3d; transition: transform var(--slide-time) var(--ease), opacity var(--slide-time) var(--ease), visibility var(--slide-time); }
-    .slide::before { position: absolute; inset: 0; z-index: 0; content: ""; pointer-events: none; opacity: .45; background: linear-gradient(110deg, rgba(9, 11, 20, .94), rgba(9, 11, 20, .52) 62%, rgba(9, 11, 20, .78)); transition: opacity var(--slide-time) var(--ease), filter var(--slide-time) var(--ease); }
-    .slide[data-state="active"] { z-index: 3; visibility: visible; opacity: 1; pointer-events: auto; transform: translate3d(0, 0, 0) scale(1); }
-    .slide[data-state="enter-right"] { z-index: 4; visibility: visible; opacity: 0; transform: translate3d(12vw, 0, -280px) rotateY(-13deg) scale(.96); }
-    .slide[data-state="enter-left"] { z-index: 4; visibility: visible; opacity: 0; transform: translate3d(-12vw, 0, -280px) rotateY(13deg) scale(.96); }
-    .slide[data-state="exit-left"] { z-index: 2; visibility: visible; opacity: 0; transform: translate3d(-8vw, 0, -190px) rotateY(8deg) scale(.97); }
-    .slide[data-state="exit-right"] { z-index: 2; visibility: visible; opacity: 0; transform: translate3d(8vw, 0, -190px) rotateY(-8deg) scale(.97); }
-    .slide[data-state^="exit"]::before { opacity: .14; filter: blur(4px); }
-    .slide-content { position: relative; z-index: 1; display: grid; width: min(100%, 1320px); margin: 0 auto; grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr); align-items: center; gap: clamp(32px, 6vw, 100px); transform-style: preserve-3d; }
-    .copy { position: relative; z-index: 2; max-width: 760px; transform: translate3d(var(--px, 0px), var(--py, 0px), 38px); transition: transform 500ms var(--ease); }
-    .brand { display: inline-flex; align-items: baseline; gap: 7px; margin-bottom: clamp(30px, 5vh, 58px); }
-    .brand-run { color: var(--cyan); font-size: 23px; font-weight: 800; }
-    .brand-name { font: 500 11px "DM Mono", monospace; letter-spacing: .12em; }
-    .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--cyan); font: 500 10px "DM Mono", monospace; letter-spacing: .16em; text-transform: uppercase; }
-    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 16px rgba(114, 232, 239, .75); content: ""; }
-    h1, h2 { max-width: 850px; margin: 20px 0 0; font-size: 56px; font-weight: 700; line-height: 1.02; }
-    h2 { font-size: 48px; }
-    @media (min-width: 761px) { h1 { font-size: 70px; } h2 { font-size: 60px; } }
-    @media (min-width: 1200px) { h1 { font-size: 82px; } h2 { font-size: 72px; } }
-    .gradient-text { color: transparent; background: linear-gradient(100deg, #c3b5ff, var(--cyan)); -webkit-background-clip: text; background-clip: text; }
-    .accent { color: var(--cyan); }
-    .accent-violet { color: var(--violet); }
-    .lead { max-width: 650px; margin: 24px 0 0; color: var(--muted); font-size: 17px; line-height: 1.75; }
-    .word { display: inline-block; opacity: 0; transform: translate3d(0, 24px, 30px); }
-    .slide[data-state="active"] .word { animation: word-in 720ms var(--ease) forwards; animation-delay: calc(var(--word-index, 0) * 70ms + 120ms); }
-    @keyframes word-in { to { opacity: 1; transform: translate3d(0, 0, 0); } }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-    .button { position: relative; display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 9px; padding: 0 19px; border: 1px solid rgba(255,255,255,.16); border-radius: 6px; overflow: hidden; font-size: 12px; font-weight: 700; transition: transform 350ms var(--ease), box-shadow 350ms var(--ease), border-color 350ms ease; }
-    .button:hover { transform: translateY(-3px); }
-    .button-primary { border-color: transparent; background: linear-gradient(110deg, var(--violet), var(--cyan)); color: #0b0d16; box-shadow: 0 10px 30px rgba(114,232,239,.14); }
-    .button-primary:hover { box-shadow: 0 12px 38px rgba(114,232,239,.27); }
-    .button-secondary { background: rgba(255,255,255,.04); color: var(--white); backdrop-filter: blur(12px); }
-    .button-secondary:hover { border-color: rgba(114,232,239,.55); }
-    .magnetic { transform: translate3d(var(--mag-x,0px),var(--mag-y,0px),0); transition: transform 350ms var(--ease), box-shadow 350ms ease; }
-    .magnetic:hover { transform: translate3d(var(--mag-x,0px),calc(var(--mag-y,0px) - 2px),0); }
-    .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 29px; }
-    .tag { padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; color: #c5c9d6; background: rgba(255,255,255,.025); font: 400 9px "DM Mono", monospace; letter-spacing: .08em; }
+    .hero { position: relative; display: grid; min-height: 890px; min-height: min(100svh,1040px); align-items: center; overflow: hidden; padding: 135px 0 100px; isolation: isolate; }
+    .hero::before { position: absolute; z-index: -1; top: 12%; left: 50%; width: min(1000px,100vw); height: 670px; border-radius: 50%; background: radial-gradient(ellipse,rgba(119,85,224,.13),rgba(45,212,191,.04) 36%,transparent 69%); filter: blur(38px); content: ""; transform: translateX(-50%); }
+    .hero-inner { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; }
+    .hero .eyebrow { margin-bottom: 25px; }
+    .hero h1 { max-width: 1000px; margin: 0; font-size: 84px; font-weight: 700; line-height: .99; letter-spacing: 0; }
+    .hero h1 span { display: block; }
+    .hero-copy { max-width: 510px; margin: 23px auto 0; color: #a1a1a7; font-size: 16px; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 9px; padding: 0 20px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; font-size: 12px; font-weight: 600; transition: transform 180ms var(--ease),border-color 220ms ease,background 220ms ease,box-shadow 220ms ease; }
+    button:active,.button:active,.nav-cta:active,.social-link:active { transform: scale(.97); }
+    .button-primary { border-color: transparent; background: linear-gradient(105deg,#a486ff,#79e4d5); color: #08090b; box-shadow: 0 8px 30px rgba(111,210,202,.16); }
+    .button-primary:hover { box-shadow: 0 10px 38px rgba(111,210,202,.28); transform: translateY(-2px); }
+    .button-quiet { background: rgba(255,255,255,.035); color: #ededf1; }
+    .button-quiet:hover { border-color: rgba(255,255,255,.34); background: rgba(255,255,255,.07); }
+    .hero-stage { position: relative; display: grid; width: min(680px,100%); height: 310px; place-items: center; margin-top: 60px; perspective: 1000px; }
+    .stage-halo { position: absolute; width: 420px; height: 160px; border-radius: 50%; background: rgba(45,212,191,.12); filter: blur(72px); transform: translateY(40px); }
+    .stage-core { position: relative; display: grid; width: 220px; height: 220px; place-items: center; border: 1px solid rgba(255,255,255,.2); border-radius: 48px; background: linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.025) 52%,rgba(139,92,246,.13)); box-shadow: 0 45px 100px rgba(0,0,0,.55),inset 0 1px rgba(255,255,255,.25),0 0 75px rgba(139,92,246,.12); transform: rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transform-style: preserve-3d; transition: transform 300ms var(--ease); }
+    .stage-core::before { position: absolute; inset: 12px; border: 1px solid rgba(255,255,255,.11); border-radius: 37px; content: ""; transform: translateZ(18px); }
+    .stage-core::after { position: absolute; width: 90px; height: 90px; border: 1px solid rgba(45,212,191,.43); border-radius: 50%; box-shadow: 0 0 44px rgba(45,212,191,.15),inset 0 0 26px rgba(139,92,246,.16); content: ""; transform: translateZ(42px); }
+    .stage-mark { position: relative; z-index: 1; display: grid; width: 78px; height: 78px; place-items: center; overflow: hidden; border: 1px solid rgba(255,255,255,.24); border-radius: 23px; background: #f8f8fb; box-shadow: 0 12px 42px rgba(0,0,0,.28); transform: translateZ(70px); }
+    .stage-mark img { width: 100%; height: 100%; object-fit: cover; }
+    .stage-orbit { position: absolute; width: 390px; height: 170px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; transform: rotateX(67deg) rotateZ(-17deg); }
+    .stage-orbit::after { position: absolute; top: 10%; left: 17%; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 20px var(--teal); content: ""; }
+    .stage-orbit-two { width: 320px; height: 250px; border-color: rgba(139,92,246,.25); transform: rotateX(67deg) rotateZ(35deg); }
+    .stage-label { position: absolute; bottom: 3px; color: #77777f; font-size: 9px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+    .scroll-cue { position: absolute; bottom: 30px; left: 50%; display: flex; align-items: center; gap: 10px; color: #727279; font-size: 9px; letter-spacing: .13em; text-transform: uppercase; transform: translateX(-50%); }
+    .scroll-cue::after { width: 1px; height: 27px; background: linear-gradient(var(--teal),transparent); content: ""; }
 
-    .visual { position: relative; min-width: 0; perspective: 1100px; transform: translate3d(var(--px, 0px), var(--py, 0px), 0); transition: transform 600ms var(--ease); }
-    .glass { position: relative; border: 1px solid rgba(224, 226, 255, .15); border-radius: 9px; background: linear-gradient(140deg, rgba(29, 32, 53, .82), rgba(17, 20, 34, .84)); box-shadow: 0 32px 90px rgba(0,0,0,.36), inset 0 1px rgba(255,255,255,.08); backdrop-filter: blur(20px); transform-style: preserve-3d; }
-    .glass::before { position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(130deg, rgba(114,232,239,.45), transparent 35%, rgba(154,131,255,.3)); content: ""; opacity: .58; pointer-events: none; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude; }
-    .intro-art { position: relative; display: grid; min-height: 430px; place-items: center; overflow: hidden; }
-    .intro-art::before { position: absolute; width: 75%; aspect-ratio: 1; border: 1px solid rgba(154,131,255,.18); border-radius: 50%; box-shadow: 0 0 100px rgba(114,232,239,.08), inset 0 0 90px rgba(154,131,255,.08); content: ""; transform: rotateX(65deg) rotateZ(-22deg); }
-    .orbit { position: absolute; width: 72%; aspect-ratio: 1; border: 1px solid rgba(114,232,239,.22); border-radius: 50%; transform: rotateX(67deg) rotateY(-19deg) rotateZ(27deg); transform-style: preserve-3d; animation: orbit 18s linear infinite; }
-    .orbit::after { position: absolute; top: 13%; left: 12%; width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 24px var(--cyan); content: ""; }
-    .orbit-two { width: 58%; border-color: rgba(154,131,255,.32); transform: rotateX(67deg) rotateY(25deg) rotateZ(-22deg); animation-direction: reverse; animation-duration: 24s; }
-    .orbit-three { width: 88%; border-style: dashed; border-color: rgba(255,255,255,.11); transform: rotateX(72deg) rotateY(12deg) rotateZ(54deg); animation-duration: 32s; }
-    @keyframes orbit { to { transform: rotateX(67deg) rotateY(-19deg) rotateZ(387deg); } }
-    .brand-cube { position: relative; display: grid; width: 150px; aspect-ratio: 1; place-items: center; border: 1px solid rgba(255,255,255,.19); border-radius: 28px; background: linear-gradient(145deg, rgba(178,164,255,.24), rgba(89,219,230,.12)); box-shadow: 0 35px 85px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.22); color: var(--white); font-size: 74px; font-weight: 700; transform: rotateY(-18deg) rotateX(12deg) translateZ(48px); transform-style: preserve-3d; animation: levitate 5s ease-in-out infinite; }
-    .brand-cube span { transform: translateZ(22px); }
-    @keyframes levitate { 50% { transform: rotateY(-12deg) rotateX(7deg) translate3d(0,-13px,58px); } }
-    .object-caption { position: absolute; bottom: 28px; left: 30px; right: 30px; display: flex; justify-content: space-between; color: #959bad; font: 400 9px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .trust-strip { padding: 22px 0; border-block: 1px solid rgba(255,255,255,.075); background: rgba(255,255,255,.018); }
+    .trust-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .trust-label { color: #727279; font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+    .trust-marks { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 25px; color: #a6a6ad; font-size: 11px; font-weight: 600; }
+    .trust-marks span:nth-child(even) { color: #696971; }
 
-    .services-layout { grid-template-columns: 1fr; gap: 26px; }
-    .services-layout .copy { max-width: 900px; }
-    .services-layout .service-grid { width: min(100%, 1060px); justify-self: end; }
-    .service-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; perspective: 1200px; }
-    .service-card { min-height: 260px; padding: 23px 20px; border: 1px solid var(--line); border-radius: 7px; background: linear-gradient(150deg, rgba(28,31,50,.86), rgba(15,18,30,.91)); box-shadow: 0 22px 55px rgba(0,0,0,.22); transform-style: preserve-3d; transition: transform 500ms var(--ease), border-color 350ms ease, box-shadow 350ms ease; }
-    .service-card:hover { border-color: rgba(114,232,239,.43); box-shadow: 0 28px 62px rgba(0,0,0,.32), 0 0 28px rgba(114,232,239,.08); transform: translate3d(0,-8px,16px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); }
-    .card-icon { position: relative; display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid rgba(255,255,255,.15); border-radius: 13px; background: linear-gradient(140deg, rgba(154,131,255,.19), rgba(114,232,239,.08)); color: var(--cyan); font-size: 20px; transform: translateZ(35px); box-shadow: 0 12px 32px rgba(0,0,0,.22); }
-    .card-number { margin-top: 34px; color: #7f8799; font: 400 9px "DM Mono", monospace; letter-spacing: .13em; }
-    .service-card h3 { margin: 10px 0 0; font-size: 19px; font-weight: 600; transform: translateZ(24px); }
-    .service-card p { margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; transform: translateZ(15px); }
+    .services { padding-top: 145px; }
+    .bento-grid { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); gap: 14px; }
+    .service-card { position: relative; min-height: 305px; padding: 28px; overflow: hidden; border: 1px solid var(--line); border-radius: 23px; background: linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018)); box-shadow: inset 0 1px rgba(255,255,255,.035); transition: transform 450ms var(--ease),border-color 350ms ease,background 350ms ease,box-shadow 350ms ease; }
+    .service-card:hover { border-color: rgba(255,255,255,.24); background: linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.024)); box-shadow: 0 30px 80px rgba(0,0,0,.23),0 0 40px rgba(45,212,191,.045); transform: translateY(-5px) scale(1.008); }
+    .service-card-large { grid-column: span 7; min-height: 380px; }
+    .service-card-tall { grid-column: span 5; grid-row: span 2; min-height: 625px; }
+    .service-card-small,.service-card-bottom { grid-column: span 7; min-height: 230px; }
+    .service-card-head { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .service-icon { display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid rgba(255,255,255,.13); border-radius: 14px; background: rgba(255,255,255,.055); color: #d6d6dc; font-size: 19px; }
+    .service-number { color: #727279; font-size: 9px; font-weight: 500; letter-spacing: .13em; }
+    .service-card h3 { position: relative; z-index: 2; max-width: 420px; margin: 60px 0 0; font-size: 25px; font-weight: 600; line-height: 1.2; }
+    .service-card p { position: relative; z-index: 2; max-width: 390px; margin: 11px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .service-art { position: absolute; right: 8%; bottom: 5%; width: 65%; height: 45%; opacity: .92; pointer-events: none; }
+    .browser-window { position: absolute; right: 0; bottom: 0; width: 84%; height: 100%; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; background: linear-gradient(145deg,#1b1c22,#0e0e12); box-shadow: 0 25px 65px rgba(0,0,0,.38); transform: perspective(800px) rotateY(-13deg) rotateX(4deg); }
+    .browser-bar { display: flex; height: 25px; align-items: center; gap: 4px; padding-left: 10px; border-bottom: 1px solid rgba(255,255,255,.09); }
+    .browser-bar i { width: 4px; height: 4px; border-radius: 50%; background: #64646b; }
+    .browser-body { display: grid; height: calc(100% - 25px); grid-template-columns: 1.1fr .9fr; align-items: center; gap: 12px; padding: 14px; }
+    .browser-lines { display: grid; gap: 8px; }
+    .browser-lines i { display: block; width: 78%; height: 5px; border-radius: 4px; background: rgba(255,255,255,.15); }
+    .browser-lines i:first-child { width: 92%; height: 10px; background: linear-gradient(90deg,rgba(139,92,246,.85),rgba(45,212,191,.7)); }
+    .browser-preview { height: 78%; border: 1px solid rgba(255,255,255,.11); border-radius: 8px; background: radial-gradient(ellipse at 65% 30%,rgba(45,212,191,.52),transparent 25%),linear-gradient(135deg,#272333,#13141a); }
+    .product-orbit { position: absolute; top: 44%; left: 50%; width: 240px; height: 240px; border: 1px solid rgba(139,92,246,.28); border-radius: 50%; box-shadow: inset 0 0 45px rgba(139,92,246,.08),0 0 48px rgba(139,92,246,.06); transform: translate(-50%,-50%) rotateX(65deg) rotateZ(-25deg); }
+    .product-orbit-two { width: 180px; height: 180px; border-color: rgba(45,212,191,.33); transform: translate(-50%,-50%) rotateX(65deg) rotateZ(31deg); }
+    .product-core { position: absolute; top: 44%; left: 50%; display: grid; width: 100px; height: 100px; place-items: center; border: 1px solid rgba(255,255,255,.19); border-radius: 27px; background: linear-gradient(145deg,rgba(139,92,246,.34),rgba(45,212,191,.12)); box-shadow: 0 20px 55px rgba(0,0,0,.38); color: #e3dcff; font-size: 36px; transform: translate(-50%,-50%) rotate(-12deg); }
+    .signal-bars { position: absolute; right: 10%; bottom: 12%; left: 10%; display: flex; height: 120px; align-items: end; justify-content: center; gap: 9px; }
+    .signal-bars i { width: 11%; height: var(--bar-height); border: 1px solid rgba(45,212,191,.24); border-radius: 7px 7px 2px 2px; background: linear-gradient(180deg,rgba(45,212,191,.64),rgba(139,92,246,.13)); box-shadow: 0 0 25px rgba(45,212,191,.08); }
 
-    .plan-panel { padding: clamp(24px, 3.6vw, 46px); transform: translateZ(24px); }
-    .plan-kicker { color: var(--muted); font: 500 9px "DM Mono", monospace; letter-spacing: .14em; }
-    .plan-panel.popular { border-color: rgba(114,232,239,.45); box-shadow: 0 35px 90px rgba(0,0,0,.4), 0 0 55px rgba(114,232,239,.11), inset 0 1px rgba(255,255,255,.08); }
-    .popular-badge { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid rgba(114,232,239,.33); border-radius: 4px; color: var(--cyan); background: rgba(114,232,239,.08); font: 500 9px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
-    .plan-price { margin-top: 23px; font-size: 72px; font-weight: 700; line-height: 1; }
-    .plan-price small { color: var(--muted); font: 400 12px "DM Mono", monospace; letter-spacing: 0; }
-    .plan-description { max-width: 510px; margin: 17px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
-    .plan-features { display: grid; gap: 12px; margin: 27px 0 0; padding: 0; list-style: none; }
-    .plan-features li { display: flex; align-items: center; gap: 10px; color: #d8dcec; font-size: 12px; opacity: 0; transform: translateX(12px); }
-    .slide[data-state="active"] .plan-features li { animation: feature-in 500ms var(--ease) forwards; animation-delay: calc(var(--item-index, 0) * 75ms + 250ms); }
-    .plan-features i { color: var(--cyan); font-size: 14px; }
-    @keyframes feature-in { to { opacity: 1; transform: translateX(0); } }
-    .plan-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 28px; padding: 0 16px; border-radius: 5px; background: linear-gradient(105deg, var(--violet), var(--cyan)); color: #0d1018; font-size: 11px; font-weight: 800; transition: transform 300ms var(--ease), box-shadow 300ms ease; }
-    .plan-action:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(114,232,239,.2); }
+    .marquee { overflow: hidden; padding-block: 25px; border-block: 1px solid rgba(255,255,255,.08); background: linear-gradient(90deg,rgba(139,92,246,.05),rgba(45,212,191,.045),rgba(139,92,246,.05)); }
+    .marquee-track { display: flex; width: max-content; animation: marquee 34s linear infinite; }
+    .marquee-group { display: flex; flex: none; align-items: center; gap: 26px; padding-right: 26px; color: #9999a1; font-size: 12px; font-weight: 600; letter-spacing: .12em; white-space: nowrap; }
+    .marquee-group b { color: var(--teal); font-size: 12px; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
 
-    .director-card { padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: linear-gradient(145deg, rgba(31,34,55,.9), rgba(14,17,29,.92)); transform-style: preserve-3d; transition: transform 350ms var(--ease); }
-    .director-card img { display: block; width: 100%; aspect-ratio: 4/5; border-radius: 6px; object-fit: cover; filter: saturate(.75); }
-    .director-caption { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 8px 8px; }
-    .director-caption strong { font-size: 14px; }
-    .director-caption span { color: var(--muted); font: 400 9px "DM Mono", monospace; }
-    .quote { max-width: 650px; margin: 24px 0 0; color: #d0d5e2; font-size: 21px; line-height: 1.7; }
-    .socials { display: flex; gap: 10px; margin-top: 24px; }
-    .social-link { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 5px; color: #c4cad8; transition: color 200ms ease, border-color 200ms ease, transform 200ms ease; }
-    .social-link:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-3px); }
-    .contact-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 12px 15px; border: 1px solid var(--line); border-radius: 5px; color: var(--white); font-size: 11px; transition: color 250ms ease, border-color 250ms ease, transform 250ms var(--ease); }
-    .contact-link:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+    .plans { padding-top: 150px; }
+    .plan-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; align-items: stretch; }
+    .plan-card { position: relative; display: flex; min-height: 490px; flex-direction: column; padding: 36px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.012)); }
+    .plan-card-popular { border-color: rgba(45,212,191,.42); background: radial-gradient(ellipse at 100% 0%,rgba(45,212,191,.09),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.015)); box-shadow: 0 0 60px rgba(45,212,191,.055),inset 0 1px rgba(255,255,255,.05); }
+    .popular-badge { position: absolute; top: 20px; right: 20px; display: inline-flex; align-items: center; gap: 7px; padding: 8px 10px; border: 1px solid rgba(45,212,191,.29); border-radius: 999px; background: rgba(45,212,191,.08); color: #8de7d9; font-size: 8px; font-weight: 700; letter-spacing: .12em; }
+    .plan-kicker { color: #9a9aa2; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .plan-card h3 { margin: 27px 0 0; font-size: 23px; font-weight: 600; }
+    .plan-price { margin-top: 18px; font-size: 48px; font-weight: 700; line-height: 1; letter-spacing: 0; }
+    .plan-price small { color: var(--muted); font-size: 12px; font-weight: 500; }
+    .plan-description { max-width: 400px; min-height: 48px; margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .feature-list { display: grid; gap: 15px; margin: 30px 0 32px; padding: 0; list-style: none; }
+    .feature-list li { display: flex; align-items: center; gap: 11px; color: #d0d0d6; font-size: 12px; }
+    .feature-list i { color: var(--teal); font-size: 15px; }
+    .plan-card .button { align-self: start; margin-top: auto; }
 
-    .top-progress { position: fixed; z-index: 60; inset: 0 0 auto; height: 2px; background: rgba(255,255,255,.08); transition: opacity 350ms ease; }
-    .top-progress-fill { width: 20%; height: 100%; background: linear-gradient(90deg,var(--violet),var(--cyan)); box-shadow: 0 0 14px rgba(114,232,239,.55); transition: width 500ms var(--ease); }
-    .player-dock { position: fixed; z-index: 60; bottom: max(20px,env(safe-area-inset-bottom)); left: 50%; display: flex; width: min(94vw,640px); min-height: 70px; align-items: center; gap: 13px; padding: 10px 15px; border: 1px solid rgba(226,231,255,.16); border-radius: 10px; background: rgba(16,18,31,.76); box-shadow: 0 18px 55px rgba(0,0,0,.42), inset 0 1px rgba(255,255,255,.08); backdrop-filter: blur(24px) saturate(1.35); transform: translateX(-50%); transition: opacity 350ms ease, transform 350ms var(--ease); }
-    .controls-hidden .player-dock { opacity: 0; pointer-events: none; transform: translate(-50%,18px); }
-    .controls-hidden .top-progress { opacity: 0; }
-    .control-button { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #d8dcec; cursor: pointer; transition: color 250ms ease, border-color 250ms ease, background 250ms ease, transform 250ms var(--ease); }
-    .control-button:hover { border-color: rgba(114,232,239,.3); background: rgba(255,255,255,.06); color: var(--cyan); transform: translateY(-2px); }
-    .control-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
-    .control-button-main { background: linear-gradient(135deg,var(--violet),var(--cyan)); color: #0b0d16; }
-    .control-button-main:hover { color: #0b0d16; background: linear-gradient(135deg,#b3a4ff,#91f3f2); }
-    .dock-progress { position: relative; display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; }
-    .dock-progress svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-    .ring-track, .ring-fill { fill: none; stroke-width: 2; }
-    .ring-track { stroke: rgba(255,255,255,.12); }
-    .ring-fill { stroke: var(--cyan); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
-    .is-playing .ring-fill { animation: timer-ring 6s linear infinite; }
-    @keyframes timer-ring { to { stroke-dashoffset: 0; } }
-    .dock-count { position: relative; color: var(--white); font: 500 9px "DM Mono",monospace; }
-    .dock-info { min-width: 0; flex: 1; }
-    .dock-label { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 7px; color: #dce0ec; font: 400 9px "DM Mono",monospace; }
-    .dock-title { overflow: hidden; color: #aab0c2; text-overflow: ellipsis; white-space: nowrap; }
-    .dock-track { height: 2px; overflow: hidden; border-radius: 9px; background: rgba(255,255,255,.12); }
-    .dock-track-fill { width: 20%; height: 100%; background: linear-gradient(90deg,var(--violet),var(--cyan)); transition: width 500ms var(--ease); }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
-    @media (max-width: 760px) {
-      .slide { align-items: start; overflow-y: auto; padding: 42px 22px 120px; }
-      .slide-content { grid-template-columns: 1fr; gap: 22px; }
-      .slide-index { top: 21px; right: 22px; }
-      .brand { margin-bottom: 35px; }
-      h1, h2 { margin-top: 16px; font-size: 42px; }
-      .lead { margin-top: 17px; font-size: 15px; }
-      .intro-art { min-height: 265px; }
-      .brand-cube { width: 106px; border-radius: 22px; font-size: 52px; }
-      .plan-price { font-size: 56px; }
-      .quote { font-size: 17px; }
-      .orbit { width: 66%; }
-      .service-grid { grid-template-columns: 1fr; gap: 9px; }
-      .service-card { display: grid; min-height: 0; grid-template-columns: 40px 1fr; column-gap: 14px; padding: 14px; }
-      .service-card .card-icon { grid-row: span 2; width: 38px; height: 38px; font-size: 16px; }
-      .card-number { margin-top: 0; }
-      .service-card h3 { margin-top: 4px; font-size: 15px; }
-      .service-card p { grid-column: 2; margin-top: 5px; font-size: 11px; }
-      .plan-panel { padding: 22px; }
-      .player-dock { bottom: max(12px,env(safe-area-inset-bottom)); width: calc(100% - 20px); min-height: 66px; gap: 5px; padding: 8px; }
-      .control-button { width: 34px; height: 36px; }
-      .dock-progress { width: 38px; height: 38px; }
-      .dock-label { font-size: 8px; }
-      .dock-hint { display: none; }
-      .director-card { max-width: 260px; }
-      .cursor-glow { display: none; }
+    .director { padding-block: 150px; }
+    .director-grid { display: grid; grid-template-columns: .82fr 1.18fr; align-items: center; gap: 8%; }
+    .portrait-frame { position: relative; max-width: 390px; padding: 10px; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.02)); }
+    .portrait-frame::after { position: absolute; inset: 10px; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; content: ""; pointer-events: none; }
+    .portrait-frame img { display: block; width: 100%; aspect-ratio: 4 / 5; border-radius: 14px; object-fit: cover; filter: saturate(.74); }
+    .portrait-caption { display: flex; justify-content: space-between; gap: 12px; padding: 14px 5px 4px; color: #c3c3ca; font-size: 10px; }
+    .portrait-caption span:last-child { color: var(--muted); }
+    .director-copy blockquote { margin: 27px 0 0; font-size: 36px; font-weight: 500; line-height: 1.3; }
+    .director-copy blockquote span { color: #7c7c84; }
+    .director-copy > p:last-of-type { max-width: 510px; margin: 22px 0 0; color: var(--muted); font-size: 14px; line-height: 1.85; }
+    .director-signoff { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+    .director-signoff::before { width: 27px; height: 1px; background: var(--teal); content: ""; }
+    .director-signoff span { color: #d7d7dd; font-size: 11px; font-weight: 600; }
+    .director-signoff small { color: var(--muted); font-size: 10px; }
+
+    .request-cta { padding: 110px 0 35px; }
+    .request-cta-panel { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 35px; padding: 48px 52px; overflow: hidden; border: 1px solid rgba(255,255,255,.13); border-radius: 26px; background: radial-gradient(ellipse at 12% 0%,rgba(139,92,246,.12),transparent 48%),radial-gradient(ellipse at 100% 100%,rgba(45,212,191,.08),transparent 43%),linear-gradient(145deg,#111114,#08080a); box-shadow: 0 35px 90px rgba(0,0,0,.35); }
+    .request-cta-panel::after { position: absolute; top: -100px; left: 45%; width: 1px; height: 150%; background: linear-gradient(transparent,rgba(255,255,255,.12),transparent); content: ""; transform: rotate(20deg); }
+    .request-cta-copy { position: relative; z-index: 1; }
+    .request-cta-copy h2 { max-width: 590px; margin: 20px 0 0; font-size: 58px; font-weight: 700; line-height: 1.02; }
+    .request-cta-copy p:last-child { max-width: 480px; margin: 18px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .request-cta-panel > .button { position: relative; z-index: 1; flex: 0 0 auto; }
+    .site-footer { display: flex; min-height: 90px; align-items: center; justify-content: space-between; gap: 22px; padding-top: 26px; }
+    .footer-brand { color: #b6b6bd; font-size: 10px; font-weight: 700; letter-spacing: .08em; }
+    .footer-note { color: #73737b; font-size: 10px; }
+    .social-links { display: flex; align-items: center; gap: 9px; }
+    .social-link { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; color: #a9a9b0; font-size: 14px; transition: color 200ms ease,border-color 200ms ease,background 200ms ease,transform 180ms var(--ease); }
+    .social-link:hover { border-color: rgba(45,212,191,.44); background: rgba(45,212,191,.07); color: var(--teal); transform: translateY(-2px); }
+
+    .reveal { opacity: 0; transform: translateY(26px) scale(.985); transition: opacity 850ms var(--ease),transform 850ms var(--ease); transition-delay: var(--delay,0ms); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+    .word-line { display: block; overflow: hidden; }
+    .word-line > span { display: block; transform: translateY(110%); transition: transform 950ms var(--ease); }
+    .is-visible .word-line > span { transform: translateY(0); }
+    .cursor { position: fixed; z-index: 200; top: 0; left: 0; display: grid; width: 12px; height: 12px; place-items: center; border: 1px solid rgba(255,255,255,.55); border-radius: 50%; background: rgba(255,255,255,.1); opacity: 0; pointer-events: none; transform: translate(-50%,-50%); transition: width 220ms var(--ease),height 220ms var(--ease),background 220ms ease,border-color 220ms ease,opacity 220ms ease; }
+    .cursor.is-active { width: 42px; height: 42px; border-color: rgba(45,212,191,.75); background: rgba(45,212,191,.14); }
+    .cursor.is-visible { opacity: 1; }
+    .progress-line { position: fixed; z-index: 110; top: 0; left: 0; width: 100%; height: 2px; pointer-events: none; }
+    .progress-line span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg,var(--purple),var(--teal)); transform: scaleX(0); transform-origin: left; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
+
+    @media (max-width: 1000px) {
+      .hero { min-height: 850px; }
+      .hero h1 { font-size: 72px; }
+      .section { padding-block: 115px; }
+      .contact-banner { gap: 35px; padding: 40px; }
+      .contact-copy h2 { font-size: 48px; }
     }
-    @media (prefers-reduced-motion: reduce) {
+    @media (max-width: 760px) {
+      html { scroll-padding-top: 80px; }
+      .container { width: min(calc(100% - 40px),var(--content)); }
+      .site-header { top: 10px; width: calc(100% - 24px); min-height: 56px; padding: 7px 8px 7px 13px; }
+      .brand { gap: 8px; font-size: 10px; }
+      .brand img { width: 29px; height: 29px; }
+      .nav-cta { min-height: 38px; padding-inline: 12px; font-size: 10px; }
+      .nav-links { position: absolute; top: calc(100% + 9px); right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: rgba(12,12,14,.96); box-shadow: 0 18px 40px rgba(0,0,0,.4); backdrop-filter: blur(22px); }
+      .nav-links.is-open { display: grid; }
+      .nav-links a { padding: 14px 12px; border-radius: 10px; font-size: 12px; }
+      .nav-links a:hover { background: rgba(255,255,255,.06); }
+      .menu-toggle { display: grid; }
+      .header-actions { display: flex; align-items: center; gap: 7px; }
+      .hero { min-height: 800px; min-height: 100svh; padding: 125px 0 100px; }
+      .hero h1 { font-size: 58px; }
+      .hero-copy { max-width: 440px; font-size: 14px; }
+      .hero-stage { height: 280px; margin-top: 30px; }
+      .stage-core { width: 174px; height: 174px; border-radius: 39px; }
+      .stage-core::before { border-radius: 29px; }
+      .stage-orbit { width: 320px; height: 145px; }
+      .stage-orbit-two { width: 255px; height: 205px; }
+      .stage-mark { width: 65px; height: 65px; border-radius: 19px; }
+      .scroll-cue { bottom: 17px; }
+      .trust-inner { align-items: flex-start; flex-direction: column; }
+      .trust-marks { justify-content: flex-start; gap: 15px 21px; }
+      .section { padding-block: 94px; }
+      .section-heading { margin-bottom: 36px; }
+      .section-heading h2 { font-size: 43px; }
+      .section-heading p:last-child { font-size: 14px; }
+      .bento-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+      .service-card,.service-card-large,.service-card-tall,.service-card-small,.service-card-bottom { grid-column: span 1; grid-row: auto; min-height: 270px; padding: 20px; }
+      .service-card-large,.service-card-tall { grid-column: span 2; min-height: 350px; }
+      .service-card h3 { margin-top: 44px; font-size: 21px; }
+      .service-card p { font-size: 12px; }
+      .service-art { right: 4%; bottom: 0; width: 70%; height: 43%; }
+      .service-card-tall .service-art { right: 0; height: 42%; }
+      .product-orbit { width: 180px; height: 180px; }
+      .product-orbit-two { width: 135px; height: 135px; }
+      .product-core { width: 76px; height: 76px; font-size: 29px; }
+      .signal-bars { height: 95px; }
+      .service-card-small h3,.service-card-bottom h3 { margin-top: 38px; }
+      .plan-grid { grid-template-columns: 1fr; gap: 12px; }
+      .plan-card { min-height: 0; padding: 27px; }
+      .plan-card h3 { margin-top: 25px; font-size: 20px; }
+      .plan-price { font-size: 43px; }
+      .feature-list { gap: 13px; margin-block: 24px; }
+      .director-grid { grid-template-columns: 1fr; gap: 36px; }
+      .portrait-frame { width: min(100%,390px); margin-inline: auto; }
+      .director-copy blockquote { font-size: 30px; }
+      .request-cta { padding-top: 80px; }
+      .request-cta-panel { align-items: flex-start; flex-direction: column; gap: 25px; padding: 30px 24px; border-radius: 22px; }
+      .request-cta-panel::after { display: none; }
+      .request-cta-copy h2 { font-size: 47px; }
+      .site-footer { align-items: flex-start; flex-wrap: wrap; padding-bottom: 24px; }
+      .footer-note { order: 3; width: 100%; }
+      .cursor { display: none; }
+    }
+    @media (max-width: 420px) {
+      .hero h1 { font-size: 48px; }
+      .hero .eyebrow { font-size: 9px; }
+      .hero-actions { width: 100%; }
+      .hero-actions .button { flex: 1; padding-inline: 12px; font-size: 11px; }
+      .stage-orbit { width: 280px; }
+      .stage-orbit-two { width: 230px; }
+      .section-heading h2 { font-size: 37px; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .service-card,.service-card-large,.service-card-tall,.service-card-small,.service-card-bottom { grid-column: 1; min-height: 265px; }
+      .service-card-large { min-height: 330px; }
+      .service-card-tall { min-height: 410px; }
+      .service-art { width: 79%; height: 44%; }
+      .plan-card { padding: 24px 20px; }
+      .popular-badge { top: 15px; right: 15px; font-size: 7px; }
+      .plan-price { font-size: 38px; }
+      .request-cta-copy h2 { font-size: 40px; }
+    }
+    @media (hover:none),(pointer:coarse) { .cursor { display: none; } }
+    @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-      .slide, .slide-content, .parallax, .service-card, .director-card { transform: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      .word-line > span { transform: none; }
+      .marquee-track { animation: none; }
     }
   </style>
 </head>
 <body>
-  <div class="ambient" aria-hidden="true"><canvas id="ambient-canvas"></canvas></div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
-  <div class="top-progress" aria-hidden="true"><div class="top-progress-fill" id="top-progress-fill"></div></div>
+  <div class="progress-line" aria-hidden="true"><span id="page-progress"></span></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
 
-  <main class="deck" id="deck" aria-label="Runfourcode presentation">
-    <section class="slide" id="slide-1" data-state="active" data-title="Introduction" aria-labelledby="title-1" aria-hidden="false">
-      <span class="slide-index">RUNFOURCODE / 01</span>
-      <div class="slide-content">
-        <div class="copy parallax" data-depth="34">
-          <a class="brand" href="#deck" aria-label="Runfourcode home"><span class="brand-run">Run</span><span class="brand-name">FOURCODE</span></a>
-          <p class="eyebrow">Digital studio · Built for business</p>
-          <h1 id="title-1"><span class="reveal-word" style="--word-index:0">Digital solutions</span><br><span class="reveal-word gradient-text" style="--word-index:1">for what’s next.</span></h1>
-          <p class="lead">Websites, custom software, and digital marketing to help your business move forward.</p>
-          <button class="button button-primary magnetic" type="button" data-action="start">Start Presentation <i class="icon-arrow-right" aria-hidden="true"></i></button>
-        </div>
-        <div class="visual parallax" data-depth="18">
-          <div class="intro-art glass" data-tilt>
-            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
-            <div class="brand-cube"><span>R</span></div>
-            <div class="object-caption"><span>RUNFOURCODE / DIGITAL STUDIO</span><span>01 — 05</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="slide-2" data-title="Services" aria-labelledby="title-2" aria-hidden="true" inert>
-      <span class="slide-index">RUNFOURCODE / 02</span>
-      <div class="slide-content services-layout">
-        <div class="copy parallax" data-depth="30">
-          <p class="eyebrow">Our capabilities</p>
-          <h2 id="title-2"><span class="reveal-word" style="--word-index:0">One team.</span><br><span class="reveal-word gradient-text" style="--word-index:1">Every digital layer.</span></h2>
-          <p class="lead">From your first online impression to the systems and campaigns that help your business scale.</p>
-        </div>
-        <div class="service-grid parallax" data-depth="16">
-          <article class="service-card" data-tilt>
-            <span class="card-icon"><i class="icon-panels-top-left" aria-hidden="true"></i></span><span class="card-number">01 / WEB</span>
-            <h3>Website Development</h3><p>Beautiful, responsive showcase websites tailored for your brand.</p>
-          </article>
-          <article class="service-card" data-tilt>
-            <span class="card-icon"><i class="icon-boxes" aria-hidden="true"></i></span><span class="card-number">02 / PRODUCT</span>
-            <h3>Software &amp; Products</h3><p>Custom software, CRM, ERP, apps, and scalable tech products.</p>
-          </article>
-          <article class="service-card" data-tilt>
-            <span class="card-icon"><i class="icon-chart-no-axes-combined" aria-hidden="true"></i></span><span class="card-number">03 / GROWTH</span>
-            <h3>Digital Marketing</h3><p>Targeted digital campaigns that put your brand in front of the right people.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="slide-3" data-title="Showcase website" aria-labelledby="title-3" aria-hidden="true" inert>
-      <span class="slide-index">RUNFOURCODE / 03</span>
-      <div class="slide-content">
-        <div class="copy parallax" data-depth="28">
-          <p class="eyebrow">A one-time starting point</p>
-          <h2 id="title-3"><span class="reveal-word" style="--word-index:0">Your business,</span><br><span class="reveal-word gradient-text" style="--word-index:1">online &amp; in control.</span></h2>
-          <p class="lead">For businesses without online leads yet. Launch a polished website, then manage it yourself after handover.</p>
-        </div>
-        <div class="visual parallax" data-depth="15">
-          <article class="plan-panel glass" data-tilt>
-            <span class="plan-kicker">01 / SHOWCASE WEBSITE</span>
-            <div class="plan-price">₹10,000 <small>one-time</small></div>
-            <p class="plan-description">A considered online home that introduces your business and makes it easy for customers to reach you.</p>
-            <ul class="plan-features">
-              <li style="--item-index:0"><i class="icon-check" aria-hidden="true"></i>Custom showcase website</li>
-              <li style="--item-index:1"><i class="icon-check" aria-hidden="true"></i>Mobile responsive design</li>
-              <li style="--item-index:2"><i class="icon-check" aria-hidden="true"></i>Basic SEO setup</li>
-              <li style="--item-index:3"><i class="icon-check" aria-hidden="true"></i>Full handover and control</li>
-            </ul>
-            <a class="plan-action magnetic" href="mailto:hello@runfourcode.com?subject=Showcase%20Website">Choose this plan <i class="icon-arrow-up-right" aria-hidden="true"></i></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="slide-4" data-title="Online business management" aria-labelledby="title-4" aria-hidden="true" inert>
-      <span class="slide-index">RUNFOURCODE / 04</span>
-      <div class="slide-content">
-        <div class="copy parallax" data-depth="28">
-          <p class="eyebrow">An ongoing partnership</p>
-          <h2 id="title-4"><span class="reveal-word" style="--word-index:0">Already getting leads?</span><br><span class="reveal-word gradient-text" style="--word-index:1">We’ll take it from here.</span></h2>
-          <p class="lead">For online businesses and stores that need customers handled, their website maintained, and every enquiry followed up.</p>
-        </div>
-        <div class="visual parallax" data-depth="15">
-          <article class="plan-panel glass popular-plan" data-tilt>
-            <span class="popular-badge"><i class="icon-sparkles" aria-hidden="true"></i> MOST POPULAR</span>
-            <div class="plan-kicker">02 / ONLINE BUSINESS MANAGEMENT</div>
-            <div class="plan-price">₹2,500 <small>/ month</small></div>
-            <p class="plan-description">Keep your online business responsive and up to date. No customer message or enquiry gets left behind.</p>
-            <ul class="plan-features">
-              <li style="--item-index:0"><i class="icon-check" aria-hidden="true"></i>Website and store maintenance</li>
-              <li style="--item-index:1"><i class="icon-check" aria-hidden="true"></i>Customer handling</li>
-              <li style="--item-index:2"><i class="icon-check" aria-hidden="true"></i>Enquiry follow-up</li>
-              <li style="--item-index:3"><i class="icon-check" aria-hidden="true"></i>Content updates</li>
-              <li style="--item-index:4"><i class="icon-check" aria-hidden="true"></i>Priority support</li>
-            </ul>
-            <a class="plan-action magnetic" href="mailto:hello@runfourcode.com?subject=Online%20Business%20Management">Choose this plan <i class="icon-arrow-up-right" aria-hidden="true"></i></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" id="slide-5" data-title="Meet the director" aria-labelledby="title-5" aria-hidden="true" inert>
-      <span class="slide-index">RUNFOURCODE / 05</span>
-      <div class="slide-content director-layout">
-        <div class="copy parallax" data-depth="26">
-          <a class="brand" href="#deck" aria-label="Runfourcode home"><span class="brand-run">Run</span><span class="brand-name">FOURCODE</span></a>
-          <p class="eyebrow">Founder &amp; Director</p>
-          <h2 id="title-5">Rahul<br><span class="gradient-text">Sharma.</span></h2>
-          <blockquote class="quote">“With over a decade of experience in tech and business, I believe in empowering businesses with code that actually works. We don't just build websites; we build growth engines.”</blockquote>
-          <a class="contact-link" href="mailto:hello@runfourcode.com">Let's talk <i class="icon-arrow-up-right" aria-hidden="true"></i></a>
-          <div class="socials"><a class="social-link" href="mailto:hello@runfourcode.com" aria-label="Email Runfourcode"><i class="icon-mail" aria-hidden="true"></i></a><a class="social-link" href="#" aria-label="LinkedIn"><i class="icon-linkedin" aria-hidden="true"></i></a><a class="social-link" href="#" aria-label="Instagram"><i class="icon-instagram" aria-hidden="true"></i></a></div>
-        </div>
-        <div class="visual parallax" data-depth="12"><div class="director-card" data-tilt><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" alt="Rahul Sharma, Founder and Director of Runfourcode"><div class="director-caption"><strong>Rahul Sharma</strong><span>RUNFOURCODE / LEADERSHIP</span></div></div></div>
-      </div>
-    </section>
-
-    <div class="sr-only" id="slide-announcer" aria-live="polite" aria-atomic="true"></div>
-  </main>
-
-  <div class="top-progress" aria-hidden="true"><span class="top-progress-fill" id="top-progress-fill"></span></div>
-  <nav class="player-dock" id="player-dock" aria-label="Presentation player controls">
-    <div class="player-controls">
-      <button class="control-button" type="button" data-action="previous" aria-label="Previous slide" title="Previous slide"><i class="icon-skip-back" aria-hidden="true"></i></button>
-      <button class="control-button control-button-main" type="button" data-action="play" aria-label="Play presentation" title="Play"><i class="icon-play" aria-hidden="true"></i></button>
-      <button class="control-button" type="button" data-action="stop" aria-label="Stop and reset to slide one" title="Stop"><i class="icon-square" aria-hidden="true"></i></button>
-      <button class="control-button" type="button" data-action="next" aria-label="Next slide" title="Next slide"><i class="icon-skip-forward" aria-hidden="true"></i></button>
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#top" aria-label="Runfourcode home"><img src="runfourcode-logo.jpg" alt="Runfourcode Official Logo"><span>RUNFOURCODE</span></a>
+    <nav class="nav-links" id="site-nav" aria-label="Main navigation">
+      <a href="#services">Services</a><a href="#plans">Plans</a><a href="#about">Studio</a>
+    </nav>
+    <div class="header-actions">
+      <a class="nav-cta magnetic" href="dashboard.html">Start a project <i class="icon-arrow-up-right" aria-hidden="true"></i></a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><i class="icon-menu" aria-hidden="true"></i></button>
     </div>
-    <div class="dock-progress" aria-label="Autoplay timer"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="ring-track" cx="20" cy="20" r="16"></circle><circle class="ring-fill" id="timer-ring" cx="20" cy="20" r="16"></circle></svg><span class="dock-count" id="slide-count">01/05</span></div>
-    <div class="dock-info"><div class="dock-label"><span class="dock-title" id="slide-name">INTRODUCTION</span><span class="dock-hint">← → &nbsp; SPACE</span></div><div class="dock-track"><span class="dock-track-fill" id="dock-track-fill"></span></div></div>
-  </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <p class="eyebrow reveal">Independent digital studio / India &amp; everywhere</p>
+        <h1 id="hero-title" class="reveal"><span class="word-line"><span>Runfourcode.</span></span><span class="word-line"><span class="gradient-text">Pro design. Pro code.</span></span></h1>
+        <p class="hero-copy reveal">We build the digital foundations ambitious businesses need to grow, adapt, and stand apart.</p>
+        <div class="hero-actions reveal"><a class="button button-primary magnetic" href="dashboard.html">Start a project <i class="icon-arrow-up-right" aria-hidden="true"></i></a><a class="button button-quiet magnetic" href="#services">Our services <i class="icon-arrow-down" aria-hidden="true"></i></a></div>
+        <div class="hero-stage reveal" id="hero-stage" aria-label="Interactive Runfourcode brand sculpture">
+          <div class="stage-halo"></div><div class="stage-orbit"></div><div class="stage-orbit stage-orbit-two"></div>
+          <div class="stage-core"><div class="stage-mark"><img src="runfourcode-logo.jpg" alt=""></div></div>
+          <span class="stage-label">A new standard for digital</span>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#services" aria-label="Scroll to services">Scroll to explore</a>
+    </section>
+
+    <div class="trust-strip" aria-label="Studio capabilities"><div class="container trust-inner"><span class="trust-label">The work spans</span><div class="trust-marks"><span>Digital experiences</span><span aria-hidden="true">✳</span><span>Custom platforms</span><span aria-hidden="true">✳</span><span>Business growth</span><span aria-hidden="true">✳</span><span>Built to scale</span></div></div></div>
+
+    <section class="section services" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">What we do</p><h2 id="services-title">The right craft.<br><span class="gradient-text">The right outcome.</span></h2><p>One senior-minded team across the experiences, products, and systems your business depends on.</p></div>
+        <div class="bento-grid">
+          <article class="service-card service-card-large reveal" style="--delay:0ms"><div class="service-card-head"><span class="service-icon"><i class="icon-panels-top-left" aria-hidden="true"></i></span><span class="service-number">01 / EXPERIENCE</span></div><h3>Website Development</h3><p>Distinctive, high-performing websites designed around your brand and made to turn attention into action.</p><div class="service-art" aria-hidden="true"><div class="browser-window"><div class="browser-bar"><i></i><i></i><i></i></div><div class="browser-body"><div class="browser-lines"><i></i><i></i><i></i><i></i></div><div class="browser-preview"></div></div></div></div></article>
+          <article class="service-card service-card-tall reveal" style="--delay:100ms"><div class="service-card-head"><span class="service-icon"><i class="icon-boxes" aria-hidden="true"></i></span><span class="service-number">02 / PRODUCT</span></div><h3>Software &amp; Products</h3><p>Thoughtful tools and custom platforms that simplify complex work and create room to scale.</p><div class="service-art" aria-hidden="true"><div class="product-orbit"></div><div class="product-orbit product-orbit-two"></div><div class="product-core"><i class="icon-command" aria-hidden="true"></i></div></div></article>
+          <article class="service-card service-card-small reveal" style="--delay:150ms"><div class="service-card-head"><span class="service-icon"><i class="icon-chart-no-axes-combined" aria-hidden="true"></i></span><span class="service-number">03 / GROWTH</span></div><h3>Digital Marketing</h3><p>Clear strategy and considered campaigns that connect with the right people.</p><div class="service-art" aria-hidden="true"><div class="signal-bars"><i style="--bar-height:32%"></i><i style="--bar-height:53%"></i><i style="--bar-height:44%"></i><i style="--bar-height:78%"></i><i style="--bar-height:62%"></i><i style="--bar-height:96%"></i></div></div></article>
+          <article class="service-card service-card-bottom reveal" style="--delay:200ms"><div class="service-card-head"><span class="service-icon"><i class="icon-scan-eye" aria-hidden="true"></i></span><span class="service-number">A / APPROACH</span></div><h3>Small details. Lasting impact.</h3><p>Strategy, design, engineering, and ongoing care, thoughtfully connected from day one.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-label="Technologies and capabilities"><div class="marquee-track" aria-hidden="true"><div class="marquee-group"><span>REACT</span><b>•</b><span>NODE.JS</span><b>•</b><span>UI / UX</span><b>•</b><span>MARKETING</span><b>•</b><span>SCALABLE ARCHITECTURE</span><b>•</b></div><div class="marquee-group"><span>REACT</span><b>•</b><span>NODE.JS</span><b>•</b><span>UI / UX</span><b>•</b><span>MARKETING</span><b>•</b><span>SCALABLE ARCHITECTURE</span><b>•</b></div></div></div>
+
+    <section class="section plans" id="plans" aria-labelledby="plans-title">
+      <div class="container">
+        <div class="section-heading reveal"><p class="eyebrow">Simple by design</p><h2 id="plans-title">A clear place<br>to <span class="gradient-text">begin.</span></h2><p>Focused offers for businesses at different stages. Every engagement starts with understanding what matters to you.</p></div>
+        <div class="plan-grid">
+          <article class="plan-card reveal"><span class="plan-kicker">01 / LAUNCH</span><h3>Showcase Website</h3><div class="plan-price">₹10,000 <small>one-time</small></div><p class="plan-description">A polished digital home for your business, ready to make a strong first impression.</p><ul class="feature-list"><li><i class="icon-check" aria-hidden="true"></i>Custom showcase website</li><li><i class="icon-check" aria-hidden="true"></i>Responsive across devices</li><li><i class="icon-check" aria-hidden="true"></i>Essential SEO setup</li><li><i class="icon-check" aria-hidden="true"></i>Handover and guidance</li></ul><a class="button button-quiet magnetic" href="dashboard.html?plan=Showcase%20Website">Discuss this plan <i class="icon-arrow-up-right" aria-hidden="true"></i></a></article>
+          <article class="plan-card plan-card-popular reveal" style="--delay:100ms"><span class="popular-badge"><i class="icon-sparkles" aria-hidden="true"></i> MOST POPULAR</span><span class="plan-kicker">02 / PARTNERSHIP</span><h3>Online Business Management</h3><div class="plan-price">₹2,500 <small>/ month</small></div><p class="plan-description">Ongoing support to keep your online business current, responsive, and moving forward.</p><ul class="feature-list"><li><i class="icon-check" aria-hidden="true"></i>Website and store maintenance</li><li><i class="icon-check" aria-hidden="true"></i>Customer and enquiry follow-up</li><li><i class="icon-check" aria-hidden="true"></i>Content and product updates</li><li><i class="icon-check" aria-hidden="true"></i>Priority ongoing support</li></ul><a class="button button-primary magnetic" href="dashboard.html?plan=Online%20Business%20Management">Start a conversation <i class="icon-arrow-up-right" aria-hidden="true"></i></a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section director" id="about" aria-labelledby="about-title">
+      <div class="container director-grid">
+        <figure class="portrait-frame reveal"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=85&amp;w=1100&amp;auto=format&amp;fit=crop" alt="Rahul Sharma, Founder and Director of Runfourcode" loading="lazy"><figcaption class="portrait-caption"><span>Rahul Sharma</span><span>FOUNDER / DIRECTOR</span></figcaption></figure>
+        <div class="director-copy reveal" style="--delay:120ms"><p class="eyebrow">A note from the studio</p><h2 class="sr-only" id="about-title">Meet Rahul Sharma</h2><blockquote>“Technology should make the ambitious feel <span>possible</span>, and the complex feel <span>simple.</span>”</blockquote><p>For more than a decade, Rahul has worked at the intersection of technology and business. Runfourcode exists to help ambitious teams turn good ideas into digital work that earns its place.</p><div class="director-signoff"><span>Rahul Sharma</span><small>Founder, Runfourcode</small></div></div>
+      </div>
+    </section>
+
+    <section class="request-cta" aria-labelledby="request-cta-title">
+      <div class="container">
+        <div class="request-cta-panel reveal">
+          <div class="request-cta-copy"><p class="eyebrow">Your next chapter starts here</p><h2 id="request-cta-title">Let’s build<br><span class="gradient-text">something great.</span></h2><p>Submit a product brief through your private dashboard and follow every update from review to preview.</p></div>
+          <a class="button button-primary magnetic" href="dashboard.html">Request a product <i class="icon-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+        <footer class="site-footer"><a class="footer-brand" href="#top">RUNFOURCODE</a><span class="footer-note">Independent by nature. Connected by design. © <span id="year"></span> Runfourcode.</span><div class="social-links" aria-label="Social media"><a class="social-link magnetic" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="icon-linkedin" aria-hidden="true"></i></a><a class="social-link magnetic" href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="icon-twitter" aria-hidden="true"></i></a><a class="social-link magnetic" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="icon-instagram" aria-hidden="true"></i></a></div></footer>
+      </div>
+    </section>
+  </main>
 
   <script>
     (() => {
-      const slides = [...document.querySelectorAll(".slide")];
-      const deck = document.getElementById("deck");
-      const dock = document.getElementById("player-dock");
-      const cursorGlow = document.getElementById("cursor-glow");
-      const playButton = dock.querySelector('[data-action="play"]');
-      const ring = document.getElementById("timer-ring");
-      const count = document.getElementById("slide-count");
-      const name = document.getElementById("slide-name");
-      const dockProgress = document.getElementById("dock-track-fill");
-      const topProgress = document.getElementById("top-progress-fill");
-      const announcer = document.getElementById("slide-announcer");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      const interval = 6000;
-      let active = 0;
-      let playing = false;
-      let timer = 0;
-      let transitionTimer = 0;
-      let hideTimer = 0;
-      let touchStart = null;
+      const header = document.getElementById("site-header");
+      const nav = document.getElementById("site-nav");
+      const menuToggle = document.getElementById("menu-toggle");
+      const cursor = document.getElementById("cursor");
+      const heroStage = document.getElementById("hero-stage");
+      const progress = document.getElementById("page-progress");
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-      function restartRing() {
-        dock.classList.remove("is-playing");
-        void ring.getBoundingClientRect();
-        if (playing) dock.classList.add("is-playing");
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: .14, rootMargin: "0px 0px -32px 0px" });
+        document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+        const navObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            nav.querySelectorAll("a").forEach((link) => {
+              if (link.hash === `#${entry.target.id}`) link.setAttribute("aria-current", "location");
+              else link.removeAttribute("aria-current");
+            });
+          });
+        }, { threshold: 0, rootMargin: "-35% 0px -55% 0px" });
+        document.querySelectorAll("main > section[id]").forEach((section) => navObserver.observe(section));
+      } else {
+        document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
       }
 
-      function scheduleAdvance() {
-        window.clearTimeout(timer);
-        restartRing();
-        if (playing) timer = window.setTimeout(() => goTo(active + 1), interval);
+      function updateScrollState() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.transform = `scaleX(${maxScroll > 0 ? window.scrollY / maxScroll : 0})`;
+        header.classList.toggle("is-scrolled", window.scrollY > 24);
       }
+      window.addEventListener("scroll", updateScrollState, { passive: true });
+      window.addEventListener("resize", updateScrollState, { passive: true });
+      updateScrollState();
 
-      function updatePlayer() {
-        const current = slides[active];
-        const title = current.dataset.title || "Slide";
-        count.textContent = `${String(active + 1).padStart(2, "0")}/${String(slides.length).padStart(2, "0")}`;
-        name.textContent = title.toUpperCase();
-        dockProgress.style.width = `${((active + 1) / slides.length) * 100}%`;
-        topProgress.style.width = `${((active + 1) / slides.length) * 100}%`;
-        announcer.textContent = `Slide ${active + 1} of ${slides.length}: ${title}`;
+      function closeMenu() {
+        nav.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        menuToggle.innerHTML = '<i class="icon-menu" aria-hidden="true"></i>';
       }
-
-      function goTo(index) {
-        const next = (index + slides.length) % slides.length;
-        if (next === active) {
-          if (playing) scheduleAdvance();
-          return;
-        }
-        window.clearTimeout(transitionTimer);
-        const previous = slides[active];
-        const incoming = slides[next];
-        const direction = next > active ? "right" : "left";
-        slides.forEach((slide, slideIndex) => {
-          if (slideIndex !== active && slideIndex !== next) {
-            slide.dataset.state = "inactive";
-            slide.hidden = true;
-            slide.inert = true;
-          }
-        });
-        previous.dataset.state = direction === "right" ? "exit-left" : "exit-right";
-        previous.inert = true;
-        previous.setAttribute("aria-hidden", "true");
-        incoming.hidden = false;
-        incoming.inert = false;
-        incoming.setAttribute("aria-hidden", "false");
-        incoming.dataset.state = direction === "right" ? "enter-right" : "enter-left";
-        active = next;
-        updatePlayer();
-        requestAnimationFrame(() => requestAnimationFrame(() => { incoming.dataset.state = "active"; }));
-        transitionTimer = window.setTimeout(() => {
-          previous.hidden = true;
-          previous.dataset.state = "inactive";
-        }, reducedMotion.matches ? 30 : 980);
-        if (playing) scheduleAdvance();
-        revealControls();
-      }
-
-      function setPlaying(nextState) {
-        playing = nextState;
-        window.clearTimeout(timer);
-        playButton.setAttribute("aria-label", playing ? "Pause presentation" : "Play presentation");
-        playButton.title = playing ? "Pause" : "Play";
-        playButton.innerHTML = playing ? '<i class="icon-pause" aria-hidden="true"></i>' : '<i class="icon-play" aria-hidden="true"></i>';
-        scheduleAdvance();
-      }
-
-      function togglePlayback() { setPlaying(!playing); }
-      function stopPresentation() {
-        setPlaying(false);
-        goTo(0);
-        restartRing();
-      }
-      function revealControls() {
-        document.body.classList.remove("controls-hidden");
-        window.clearTimeout(hideTimer);
-        hideTimer = window.setTimeout(() => {
-          document.body.classList.add("controls-hidden");
-          cursorGlow.classList.remove("is-visible");
-        }, 3000);
-      }
-      function toggleControls() {
-        document.body.classList.toggle("controls-hidden");
-        if (!document.body.classList.contains("controls-hidden")) revealControls();
-        else window.clearTimeout(hideTimer);
-      }
-
-      dock.querySelector('[data-action="previous"]').addEventListener("click", () => goTo(active - 1));
-      dock.querySelector('[data-action="next"]').addEventListener("click", () => goTo(active + 1));
-      dock.querySelector('[data-action="play"]').addEventListener("click", togglePlayback);
-      dock.querySelector('[data-action="stop"]').addEventListener("click", stopPresentation);
-      document.querySelector('[data-action="start"]').addEventListener("click", () => { setPlaying(true); revealControls(); });
-
-      document.addEventListener("keydown", (event) => {
-        const target = event.target;
-        if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
-        revealControls();
-        if (event.key === "ArrowRight") { event.preventDefault(); goTo(active + 1); }
-        else if (event.key === "ArrowLeft") { event.preventDefault(); goTo(active - 1); }
-        else if (event.code === "Space" && !["BUTTON", "A"].includes(target.tagName)) { event.preventDefault(); togglePlayback(); }
-        else if (event.key === "Escape") stopPresentation();
-        else if (event.key === "Home") goTo(0);
-        else if (event.key === "End") goTo(slides.length - 1);
-        else if (/^[1-5]$/.test(event.key)) goTo(Number(event.key) - 1);
+      menuToggle.addEventListener("click", () => {
+        const isOpen = nav.classList.toggle("is-open");
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+        menuToggle.innerHTML = `<i class="icon-${isOpen ? "x" : "menu"}" aria-hidden="true"></i>`;
       });
+      nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+      document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMenu(); });
 
       let pointerFrame = 0;
+      let pointerX = 0;
+      let pointerY = 0;
       window.addEventListener("pointermove", (event) => {
         if (event.pointerType === "touch" || reducedMotion.matches) return;
-        revealControls();
-        cursorGlow.classList.add("is-visible");
-        cursorGlow.style.left = `${event.clientX}px`;
-        cursorGlow.style.top = `${event.clientY}px`;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
         if (pointerFrame) return;
         pointerFrame = requestAnimationFrame(() => {
-          const x = event.clientX / window.innerWidth - .5;
-          const y = event.clientY / window.innerHeight - .5;
-          document.querySelectorAll(".slide[data-state='active'] [data-depth]").forEach((layer) => {
-            const depth = Number(layer.dataset.depth) / 36;
-            layer.style.setProperty("--px", `${x * depth * 34}px`);
-            layer.style.setProperty("--py", `${y * depth * 24}px`);
-          });
+          cursor.style.left = `${pointerX}px`;
+          cursor.style.top = `${pointerY}px`;
+          cursor.classList.add("is-visible");
+          if (pointerY < window.innerHeight) {
+            const bounds = heroStage.getBoundingClientRect();
+            const x = (pointerX - bounds.left) / bounds.width - .5;
+            const y = (pointerY - bounds.top) / bounds.height - .5;
+            heroStage.querySelector(".stage-core").style.setProperty("--rx", `${-y * 9}deg`);
+            heroStage.querySelector(".stage-core").style.setProperty("--ry", `${x * 12}deg`);
+          }
           pointerFrame = 0;
         });
       }, { passive: true });
-
-      document.querySelectorAll("[data-tilt]").forEach((card) => {
-        card.addEventListener("pointermove", (event) => {
-          if (event.pointerType === "touch" || reducedMotion.matches) return;
-          const rect = card.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width - .5;
-          const y = (event.clientY - rect.top) / rect.height - .5;
-          card.style.setProperty("--tilt-x", `${-y * 7}deg`);
-          card.style.setProperty("--tilt-y", `${x * 8}deg`);
-        });
-        card.addEventListener("pointerleave", () => {
-          card.style.setProperty("--tilt-x", "0deg");
-          card.style.setProperty("--tilt-y", "0deg");
-        });
+      window.addEventListener("pointerout", (event) => {
+        if (event.relatedTarget) return;
+        cursor.classList.remove("is-visible", "is-active");
+      });
+      document.querySelectorAll("a,button,input,textarea").forEach((element) => {
+        element.addEventListener("pointerenter", () => cursor.classList.add("is-active"));
+        element.addEventListener("pointerleave", () => cursor.classList.remove("is-active"));
       });
 
-      document.querySelectorAll(".magnetic").forEach((element) => {
-        element.addEventListener("pointermove", (event) => {
-          if (event.pointerType === "touch" || reducedMotion.matches) return;
-          const rect = element.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width - .5;
-          const y = (event.clientY - rect.top) / rect.height - .5;
-          element.style.setProperty("--mag-x", `${x * 9}px`);
-          element.style.setProperty("--mag-y", `${y * 7}px`);
-        });
-        element.addEventListener("pointerleave", () => {
-          element.style.setProperty("--mag-x", "0px");
-          element.style.setProperty("--mag-y", "0px");
-        });
-      });
-
-      deck.addEventListener("pointerdown", (event) => {
-        if (event.pointerType !== "touch" || event.target.closest(".player-dock, button, a")) return;
-        touchStart = { x: event.clientX, y: event.clientY };
-        revealControls();
-      }, { passive: true });
-      deck.addEventListener("pointerup", (event) => {
-        if (!touchStart) return;
-        const deltaX = event.clientX - touchStart.x;
-        const deltaY = event.clientY - touchStart.y;
-        touchStart = null;
-        if (Math.abs(deltaX) > 52 && Math.abs(deltaX) > Math.abs(deltaY)) goTo(active + (deltaX < 0 ? 1 : -1));
-        else if (Math.abs(deltaX) < 12 && Math.abs(deltaY) < 12 && !event.target.closest("button, a")) toggleControls();
-      }, { passive: true });
-      document.addEventListener("focusin", revealControls);
-      window.addEventListener("pointerdown", revealControls, { passive: true });
-      revealControls();
-
-      // Lazy-init Three.js after first paint; a low-resolution point field and wireframe rings provide depth without competing with copy.
-      function lazyInitWebGL() {
-        const init = async () => {
-          try {
-            const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js");
-            const canvas = document.getElementById("ambient-canvas");
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: "low-power" });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
-            renderer.setSize(window.innerWidth, window.innerHeight, false);
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, .1, 90);
-            camera.position.z = 18;
-            const field = new THREE.Group();
-            scene.add(field);
-
-            const pointsCount = 620;
-            const positions = new Float32Array(pointsCount * 3);
-            const colors = new Float32Array(pointsCount * 3);
-            const violet = new THREE.Color("#9a83ff");
-            const cyan = new THREE.Color("#72e8ef");
-            for (let index = 0; index < pointsCount; index++) {
-              const offset = index * 3;
-              positions[offset] = (Math.random() - .5) * 34;
-              positions[offset + 1] = (Math.random() - .5) * 21;
-              positions[offset + 2] = (Math.random() - .5) * 25;
-              const tint = violet.clone().lerp(cyan, Math.random());
-              colors[offset] = tint.r; colors[offset + 1] = tint.g; colors[offset + 2] = tint.b;
-            }
-            const pointGeometry = new THREE.BufferGeometry();
-            pointGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-            pointGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-            const points = new THREE.Points(pointGeometry, new THREE.PointsMaterial({ size: .035, vertexColors: true, transparent: true, opacity: .52, depthWrite: false, sizeAttenuation: true }));
-            field.add(points);
-
-            const objectGroup = new THREE.Group();
-            objectGroup.position.set(5.1, .2, -3.6);
-            scene.add(objectGroup);
-            const poly = new THREE.Mesh(new THREE.IcosahedronGeometry(3.1, 2), new THREE.MeshBasicMaterial({ color: 0x9a83ff, wireframe: true, transparent: true, opacity: .22 }));
-            const ringOne = new THREE.Mesh(new THREE.TorusGeometry(4.3, .009, 5, 140), new THREE.MeshBasicMaterial({ color: 0x72e8ef, transparent: true, opacity: .27 }));
-            const ringTwo = new THREE.Mesh(new THREE.TorusGeometry(5.2, .006, 5, 160), new THREE.MeshBasicMaterial({ color: 0x9a83ff, transparent: true, opacity: .17 }));
-            ringOne.rotation.set(1.05, .2, -.35);
-            ringTwo.rotation.set(.55, -.4, .55);
-            objectGroup.add(poly, ringOne, ringTwo);
-
-            let frame = 0;
-            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            const draw = () => {
-              renderer.render(scene, camera);
-              if (!reduced && !document.hidden) {
-                objectGroup.rotation.y += .0007;
-                objectGroup.rotation.x += .00025;
-                field.rotation.y += .00012;
-                frame = requestAnimationFrame(draw);
-              }
-            };
-            const pause = () => { cancelAnimationFrame(frame); };
-            const resume = () => { if (!reduced && !document.hidden) { cancelAnimationFrame(frame); frame = requestAnimationFrame(draw); } else renderer.render(scene, camera); };
-            document.addEventListener("visibilitychange", () => document.hidden ? pause() : resume());
-            window.addEventListener("resize", () => {
-              camera.aspect = window.innerWidth / window.innerHeight;
-              camera.updateProjectionMatrix();
-              renderer.setSize(window.innerWidth, window.innerHeight, false);
-            }, { passive: true });
-            resume();
-          } catch (error) {
-            document.getElementById("ambient-canvas").hidden = true;
-          }
-        };
-        if ("requestIdleCallback" in window) requestIdleCallback(init, { timeout: 1800 });
-        else window.setTimeout(init, 900);
-      }
-
-      requestAnimationFrame(() => requestAnimationFrame(lazyInitWebGL));
+      if (reducedMotion.matches) document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
     })();
   </script>
 </body>
 </html>
-*** End Patch
